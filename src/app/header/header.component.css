@@ -1,0 +1,42 @@
+/* styles.css */
+/* styles.css or styles.scss */
+
+
+.header-main {
+  height: 100px;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 25%;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  display: flex;
+  border-bottom: 2px solid white;
+}
+
+span {
+  line-height: 40px;
+  cursor: pointer;
+  color: white;
+  transition: .2s;
+}
+
+span:hover {
+  color: #209cff;
+  border-bottom: 1px solid #13afee;
+}
+
+.login {
+  color: white;
+  width: 30%;
+  border: 1px solid white;
+  border-radius: 20px;
+  background-color: #209cff;;
+  font-weight: bold;
+  transition: .2s;
+}
+
+.login:hover {
+  background-color: #13afee;
+}
