@@ -1,7 +1,7 @@
 package com.magazynplus.security;
 
 
-import com.magazynplus.entity.User;
+import com.magazynplus.entity.UserEntity;
 import com.magazynplus.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,7 +29,7 @@ public class JwtUserSyncFilter extends OncePerRequestFilter {
             String email = String.valueOf(token.getTokenAttributes().get("email"));
 
 
-            User user = User.builder()
+            UserEntity user = UserEntity.builder()
                     .firstname(firstname)
                     .lastname(lastname)
                     .email(email)

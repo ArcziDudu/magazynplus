@@ -17,6 +17,9 @@
 	<modules>
 		<module>backend</module>
 		<module>productService</module>
+		<module>common</module>
+        <module>userService</module>
+
 	</modules>
 
 	<properties>
@@ -63,6 +66,8 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+
+
 				</configuration>
 			</plugin>
 		</plugins>

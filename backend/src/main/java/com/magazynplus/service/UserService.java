@@ -1,8 +1,7 @@
 package com.magazynplus.service;
 
 
-import com.magazynplus.entity.User;
-import com.magazynplus.repository.UserRepository;
+import com.magazynplus.entity.UserEntity;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User getLoggedUser() {
+    public UserEntity getLoggedUser() {
         JwtAuthenticationToken token = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
         String email = String.valueOf(token.getTokenAttributes().get("email"));
@@ -26,13 +25,13 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Error while fetching user"));
     }
 
-    public void syncUser(User user) {
+    public void syncUser(UserEntity user) {
         if (user == null) {
             throw new EntityNotFoundException("Error while user sync");
         }
 
-        User saveUser = user;
-        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+        UserEntity saveUser = user;
+        Optional<UserEntity> optionalUser = userRepository.findByEmail(user.getEmail());
 
         if (optionalUser.isPresent()) {
             saveUser = optionalUser.get();
