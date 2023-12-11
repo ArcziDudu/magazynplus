@@ -16,6 +16,7 @@
 	<description>magazynplus</description>
 	<modules>
 		<module>backend</module>
+		<module>productService</module>
 	</modules>
 
 	<properties>
