@@ -1,5 +1,6 @@
 package com.magazynplus.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "t_product")
+@ToString
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,5 +27,8 @@ public class ProductEntity {
     private Boolean availability;
     private String productNumber;
     private String imageLink;
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private UserEntity user;
 }

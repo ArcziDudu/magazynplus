@@ -1,6 +1,5 @@
 package com.magazynplus.entity;
 
-import com.magazynplus.productservice.model.ProductEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;

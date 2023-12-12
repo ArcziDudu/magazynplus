@@ -1,5 +1,7 @@
 package com.magazynplus.dto;
 
+import com.magazynplus.entity.UserEntity;
+
 import java.math.BigDecimal;
 
 public record ProductResponse(Long id,
