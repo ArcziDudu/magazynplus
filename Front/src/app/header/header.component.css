@@ -16,7 +16,6 @@
 }
 
 span {
-  line-height: 40px;
   cursor: pointer;
   color: white;
   transition: .2s;
@@ -28,8 +27,10 @@ span:hover {
 }
 
 .login {
+  height: 40px;
+  line-height: 30px;
   color: white;
-  width: 30%;
+  width: 10%;
   border: 1px solid white;
   border-radius: 20px;
   background-color: #209cff;;

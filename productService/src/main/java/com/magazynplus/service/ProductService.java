@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -32,20 +33,22 @@ public class ProductService {
     public ProductResponse saveNewProduct(ProductRequest productRequest) {
         try {
             UserResponse user = webClientBuilder.build().get()
-                    .uri("http://user-service/api/user/info/2")
+                    .uri("http://api-gateway/api/user/info/2")
                     .retrieve()
                     .bodyToMono(UserResponse.class)
                     .block();
-
 
             ProductEntity productEntity = productMapper.mapFromRequest(productRequest);
             productEntity.setUser(userMapper.mapFromRequest(user));
             ProductEntity save = productJpaRepository.save((productEntity));
             return productMapper.mapFromEntity(save);
-        } catch (RuntimeException e) {
+        } catch (UserNotFoundException e) {
             {
                 throw new UserNotFoundException(String.format("User with id [%s] does not exists!", 2));
             }
+
+        }catch (RuntimeException ex){
+            throw new RuntimeException(ex);
         }
     }
 
@@ -59,5 +62,14 @@ public class ProductService {
         } else {
             productJpaRepository.deleteById(productId);
         }
+    }
+
+    public List<ProductEntity> findBySearchKey(String searchKey) {
+        UserResponse user = webClientBuilder.build().get()
+                .uri("http://api-gateway/api/user/info/2")
+                .retrieve()
+                .bodyToMono(UserResponse.class)
+                .block();
+        return user.products().stream().filter(a -> a.getName().equals(searchKey)).toList();
     }
 }

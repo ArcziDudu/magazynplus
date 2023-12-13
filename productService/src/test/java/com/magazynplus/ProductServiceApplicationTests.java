@@ -1,24 +1,24 @@
 package com.magazynplus;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.magazynplus.config.WiremockConfig;
 import com.magazynplus.dto.ProductRequest;
 import com.magazynplus.entity.ProductEntity;
-import com.magazynplus.entity.UserEntity;
 import com.magazynplus.repository.ProductJpaRepository;
-import com.magazynplus.service.ProductService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -28,25 +28,27 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-
-class ProductServiceApplicationTests {
+@ActiveProfiles("test")
+class ProductServiceApplicationTests extends WiremockConfig {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private ProductService productService;
-    @Autowired
     private ProductJpaRepository productJpaRepository;
     @LocalServerPort
-    private int port;
+    private Integer port;
+
+
     @Container
     private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpassword");
+
 
     @DynamicPropertySource
     static void setPostgresProperties(DynamicPropertyRegistry registry) {
@@ -55,18 +57,22 @@ class ProductServiceApplicationTests {
         registry.add("spring.datasource.password", postgresContainer::getPassword);
     }
 
-    @BeforeAll
-    static void setup() {
+
+    @BeforeEach
+    void setUp() {
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 90545;
     }
+
 
     @Test
     void contextLoads() {
     }
 
     @Test
-    void thatShouldAddProductCorrectly(){
+    void thatShouldAddProductCorrectly() throws JsonProcessingException {
+        String jsonResponse = "{ \"id\": 2, \"email\": \"example@email.com\", \"firstname\": \"John\", \"lastname\": \"Doe\", \"products\": [ { \"id\": 1, \"name\": \"example_name\", \"category\": \"example_category\", \"producer\": \"example_producer\", \"price\": 29.99, \"quantity\": 10, \"description\": \"example_description\", \"availability\": true, \"productNumber\": \"ba550199-91a6-4d77-9ef6-8b17d050f517\", \"imageLink\": \"example_image_link\" } ] }";
+
         ProductRequest productRequestBuilder = ProductRequest.builder()
                 .price(new BigDecimal("35.00"))
                 .name("test")
@@ -75,13 +81,11 @@ class ProductServiceApplicationTests {
                 .category("test")
                 .quantity(5)
                 .imageLink("testlink")
-                .user(UserEntity.builder()
-                        .email("test@test.com")
-                        .firstname("test")
-                        .lastname("tester")
-                        .products(List.of())
-                        .build())
                 .build();
+        wireMockServer.stubFor(get(urlPathEqualTo("/api/user/info/2"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("{\"userId\": 2, \"userName\": \"John Doe\"}")));
 
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -90,6 +94,8 @@ class ProductServiceApplicationTests {
                 .post("http://localhost:" + port + "/api/product/add")
                 .then()
                 .assertThat()
+                .log()
+                .all()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .response();
