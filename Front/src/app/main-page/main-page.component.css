@@ -1,0 +1,43 @@
+/* Structure */
+table {
+background-color: white;
+  color: #13afee;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  color: #13afee;
+}
+
+.demo-inline-calendar-card {
+  background-color: white;
+  width: 200px;
+}
+
+.btn{
+  height: 60px;
+  border-bottom: 2px solid black
+}
+.menu-button{
+  height: 40px;
+  min-width: 130px;
+  border-radius: 30px;
+  color: white;
+  background-color:  #13afee;
+  border: 1px solid white;
+  font-weight: bold;
+}
+.menu-button:hover {
+  background-color: #51caff;
+  transition: .2s;
+}
+.mat-column-Id {
+  width: 40px !important;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+.mat-mdc-header-cell {
+  border-bottom: 1px solid black !important;
+}
+
