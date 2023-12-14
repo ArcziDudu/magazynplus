@@ -1,11 +1,9 @@
-import {MatTableDataSource} from "@angular/material/table";
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {WebApiService} from "../api/web-api.service";
 import {Product} from "../_model/Product";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
 import {ProductApiService} from "../api/product-api.service";
-
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-main-page',
@@ -13,42 +11,85 @@ import {ProductApiService} from "../api/product-api.service";
   styleUrls: ['./main-page.component.css']
 })
 
-export class MainPageComponent implements OnInit, AfterViewInit {
+@Injectable()
+export class MainPageComponent implements OnInit {
+
+
+  constructor(private webApiService: WebApiService, private productApiService: ProductApiService, private dialog: MatDialog) {
+
+  }
+
   userProducts: Product[] = [];
-  displayedColumns = ['Id', 'Name', 'Category', 'Producer', 'Price', 'Quantity', 'Availability'];
+  displayedColumns = ['Id', 'Name', 'Category', 'Producer', 'Price', 'Quantity', 'Availability', 'Actions'];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  dataSource: MatTableDataSource<Product>;
+
+  productArraySize = 0;
+
+  nextPage() {
+    this.page++;
+    this.loadNextPage();
+  }
+
+  previousPage() {
+    this.page--;
+    this.loadNextPage();
+  }
+
   searchKey: string = '';
+  page: number = 0;
 
-  constructor(private webApiService: WebApiService, private productApiService: ProductApiService) {
-    this.dataSource = new MatTableDataSource(this.userProducts);
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  ngOnInit(): void {
-
-    this.webApiService.getUser().subscribe({
+  loadNextPage() {
+    this.productApiService.getProductPageable(this.page).subscribe({
       next: data => {
-        console.log(data)
-        this.userProducts = data.products;
-      }, error: err => {
+        this.userProducts = data;
+        this.productArraySize = this.userProducts.length;
+      },
+      error: err => {
         console.log(err);
       }
     });
+  }
 
+  ngOnInit(): void {
+    this.productApiService.getProductPageable(this.page).subscribe({
+      next: data => {
+        this.userProducts = data;
+        this.productArraySize = this.userProducts.length;
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
   }
 
   search(searchKey: string) {
     console.log(searchKey);
     this.productApiService.getProduct(searchKey).subscribe(data => {
       this.userProducts = data;
+      this.productArraySize = this.userProducts.length;
       console.log(data)
     });
   }
+
+
+  openDialog(id: number) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.productApiService.deleteProduct(id).subscribe(
+          () => {
+            this.ngOnInit();
+          },
+          (error) => {
+            console.error('Error while removing product:', error);
+          }
+        );
+      } else {
+        console.log('Deletion cancelled by user');
+      }
+    });
+  }
+
+
 }

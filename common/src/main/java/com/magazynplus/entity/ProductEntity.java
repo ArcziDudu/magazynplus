@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
@@ -22,11 +23,14 @@ public class ProductEntity {
     private String category;
     private String producer;
     private BigDecimal price;
-    private Integer quantity;
+    private Double quantity;
     private String description;
     private Boolean availability;
     private String productNumber;
     private String imageLink;
+    String supplier;
+    String locationInStorage;
+    LocalDate bestBeforeDate;
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference

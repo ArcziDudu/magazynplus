@@ -1,6 +1,6 @@
 /* Structure */
 table {
-background-color: white;
+  background-color: white;
   color: #13afee;
 }
 
@@ -9,35 +9,68 @@ background-color: white;
   color: #13afee;
 }
 
-.demo-inline-calendar-card {
-  background-color: white;
-  width: 200px;
-}
 
-.btn{
+.btn {
   height: 60px;
   border-bottom: 2px solid black
 }
-.menu-button{
+
+.menu-button {
   height: 40px;
   min-width: 130px;
   border-radius: 30px;
   color: white;
-  background-color:  #13afee;
+  background-color: #13afee;
   border: 1px solid white;
   font-weight: bold;
 }
+
 .menu-button:hover {
   background-color: #51caff;
   transition: .2s;
 }
+
 .mat-column-Id {
   width: 40px !important;
   border-right: 1px solid currentColor;
   padding-right: 24px;
   text-align: center;
 }
+
+.mat-column-Actions {
+  padding-left: 1px;
+  border-left: 1px solid currentColor;
+}
+
 .mat-mdc-header-cell {
   border-bottom: 1px solid black !important;
+}
+
+.page-button {
+  background-color: white;
+  color: black;
+  width: 130px;
+  height: 30px;
+  border-radius: 10px;
+  margin-right: 5px
+}
+
+.new-product {
+  min-width: 200px;
+  margin-left: 20px;
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+  background-color: rgba(51, 183, 183, 0.51);
+  border-radius: 10px;
+  padding: 10px;
+  border-top: 2px solid #0b6558;
+  border-bottom: 3px solid #0b6558;
+  border-right: none;
+  border-left: none;
+  transition: .2s;
+}
+.new-product:hover{
+  background-color: rgba(66, 213, 213, 0.51);
 }
 

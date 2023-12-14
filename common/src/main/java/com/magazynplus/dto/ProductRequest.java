@@ -1,10 +1,10 @@
 package com.magazynplus.dto;
 
-import com.magazynplus.entity.UserEntity;
 import lombok.Builder;
 import lombok.With;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Builder
 @With
@@ -12,8 +12,13 @@ public record ProductRequest(String name,
                              String category,
                              String producer,
                              BigDecimal price,
-                             Integer quantity,
+                             Double quantity,
+
                              String description,
-                             String imageLink) {
+                             Integer amount,
+                             String imageLink,
+                             String supplier,
+                             String locationInStorage,
+                             LocalDate bestBeforeDate) {
 
 }

@@ -13,6 +13,8 @@ import com.magazynplus.repository.ProductJpaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -31,25 +33,29 @@ public class ProductService {
 
     @Transactional
     public ProductResponse saveNewProduct(ProductRequest productRequest) {
-        try {
-            UserResponse user = webClientBuilder.build().get()
-                    .uri("http://api-gateway/api/user/info/2")
-                    .retrieve()
-                    .bodyToMono(UserResponse.class)
-                    .block();
 
+        if (isProductExistsByBestBeforeDateAndByName(productRequest)) {
+            log.info("Found product by name {} and best before date {}", productRequest.name(), productRequest.bestBeforeDate());
+            ProductEntity product = productJpaRepository.findByNameAndBestBeforeDate(productRequest.name(), productRequest.bestBeforeDate());
+            product.setQuantity(product.getQuantity() + productRequest.quantity());
+            log.info("Product quantity updated successfully");
+            return productMapper.mapFromEntity(productJpaRepository.save(product));
+        }
+        try {
+            UserResponse userResponse = fetchUserInfo();
             ProductEntity productEntity = productMapper.mapFromRequest(productRequest);
-            productEntity.setUser(userMapper.mapFromRequest(user));
+            productEntity.setUser(userMapper.mapFromRequest(userResponse));
             ProductEntity save = productJpaRepository.save((productEntity));
+
+            log.info("New product created successfully");
             return productMapper.mapFromEntity(save);
         } catch (UserNotFoundException e) {
-            {
-                throw new UserNotFoundException(String.format("User with id [%s] does not exists!", 2));
-            }
-
-        }catch (RuntimeException ex){
+            throw new UserNotFoundException(String.format("User with id [%s] does not exists!", 2));
+        } catch (RuntimeException ex) {
             throw new RuntimeException(ex);
         }
+
+
     }
 
 
@@ -61,15 +67,37 @@ public class ProductService {
                     String.format("Product with id [%s] does not exists!", productId));
         } else {
             productJpaRepository.deleteById(productId);
+            log.info("Product with id {} has been removed", productId);
         }
     }
 
-    public List<ProductEntity> findBySearchKey(String searchKey) {
-        UserResponse user = webClientBuilder.build().get()
+    public List<ProductResponse> findBySearchKey(String searchKey) {
+        return productJpaRepository.findByNameContainingAndUserId(searchKey, 2)
+                .stream()
+                .map(productMapper::mapFromEntity).toList();
+    }
+
+    public List<ProductResponse> findAllByUser(Integer userId, Integer page) {
+        int pageSize = 10;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return productJpaRepository.findByUserId(userId, pageable)
+                .stream()
+                .map(productMapper::mapFromEntity).toList();
+    }
+
+    //if product with the same name and best before date exists, only update amount of product
+    private boolean isProductExistsByBestBeforeDateAndByName(ProductRequest request) {
+        return productJpaRepository.existsByBestBeforeDateAndName(request.bestBeforeDate(), request.name());
+    }
+
+    //fetching logged user details from UserService by id from keycloak
+    private UserResponse fetchUserInfo() throws UserNotFoundException {
+        return webClientBuilder.build().get()
                 .uri("http://api-gateway/api/user/info/2")
                 .retrieve()
                 .bodyToMono(UserResponse.class)
                 .block();
-        return user.products().stream().filter(a -> a.getName().equals(searchKey)).toList();
     }
+
+
 }

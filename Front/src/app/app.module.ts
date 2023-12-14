@@ -20,8 +20,14 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatIconModule} from "@angular/material/icon";
 import {MatPaginatorModule} from "@angular/material/paginator";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {FormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {SaveNewProductComponent} from "./save-new-product/save-new-product.component";
+import {MatSelectModule} from "@angular/material/select";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {SuppliersComponent} from "./suppliers/suppliers.component";
+import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
+import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -30,7 +36,10 @@ import {FormsModule} from "@angular/forms";
     UserInfoComponent,
     HeaderComponent,
     HomeComponent,
-    MainPageComponent
+    MainPageComponent,
+    SaveNewProductComponent,
+    SuppliersComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +62,16 @@ import {FormsModule} from "@angular/forms";
     MatIconModule,
     MatPaginatorModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose
   ],
   providers: [
     {

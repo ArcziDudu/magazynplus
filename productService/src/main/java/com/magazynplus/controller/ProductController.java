@@ -2,12 +2,13 @@ package com.magazynplus.controller;
 
 import com.magazynplus.dto.ProductRequest;
 import com.magazynplus.dto.ProductResponse;
-import com.magazynplus.entity.ProductEntity;
 import com.magazynplus.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class ProductController {
 
     @PostMapping(value = "/add")
     public ResponseEntity<ProductResponse> addNewProduct(@RequestBody ProductRequest productRequest) {
-        return ResponseEntity.ok(productService.saveNewProduct(productRequest));
+        return ResponseEntity.ok(productService.saveNewProduct(productRequest.withBestBeforeDate(productRequest.bestBeforeDate().plusDays(1))));
     }
 
     @DeleteMapping(value = "/delete/{productId}")
@@ -28,10 +29,15 @@ public class ProductController {
     }
 
     @GetMapping(value = "/find/{searchKey}")
-    public ResponseEntity<List<ProductEntity>> searchProductBySearchKey(@PathVariable String searchKey){
+    public ResponseEntity<List<ProductResponse>> searchProductBySearchKey(@PathVariable String searchKey) {
         return ResponseEntity.ok(productService.findBySearchKey(searchKey));
     }
 
+    @GetMapping(value = "/all/{userId}/{page}")
+    public ResponseEntity<List<ProductResponse>> fetchAllProductsByUser(@PathVariable Integer userId,
+                                                                        @PathVariable Integer page) {
+        return ResponseEntity.ok(productService.findAllByUser(userId, page));
+    }
 
 
 }

@@ -14,8 +14,8 @@ public record ProductResponse(Long id,
                               String category,
                               String producer,
                               BigDecimal price,
-                              Integer quantity,
+                              Double quantity,
                               String description,
                               String imageLink,
-                              UserResponse userResponse) {
+                              Long userId) {
 }

@@ -14,6 +14,7 @@ public interface ProductMapper {
     @Mapping(target = "id", source = "entity.id")
     @Mapping(target = "availability", source = "entity.availability")
     @Mapping(target = "productNumber", source = "entity.productNumber")
+    @Mapping(target = "userId", source = "entity.user.id")
     ProductResponse mapFromEntity(ProductEntity entity);
     default ProductEntity mapFromRequest(ProductRequest request){
         return ProductEntity.builder()
@@ -26,6 +27,9 @@ public interface ProductMapper {
                 .description(request.description())
                 .quantity(request.quantity())
                 .imageLink(request.imageLink())
+                .supplier(request.supplier())
+                .bestBeforeDate(request.bestBeforeDate())
+                .locationInStorage(request.locationInStorage())
                 .build();
     }
 }
