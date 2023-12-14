@@ -1,0 +1,107 @@
+<div class="container" style="margin-top: 150px; max-height: 100%; z-index: 9999; width: 80%">
+  <div class="card p-2">
+    <form #productForm="ngForm" (ngSubmit)="addProductForm(productForm)">
+      <div class="row">
+        <div class="col-6">
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Product name</mat-label>
+              <input matInput placeholder="Product Name" [(ngModel)]="product.name" name="productName" required>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Product short description</mat-label>
+              <input matInput placeholder="Product Description" [(ngModel)]="product.description"
+                     name="productDescription" required>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Product category</mat-label>
+              <input matInput placeholder="Product category" [(ngModel)]="product.category" name="productCategory" required>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Producer</mat-label>
+              <input matInput placeholder="Product Name" [(ngModel)]="product.producer" name="producerName" required>
+            </mat-form-field>
+          </p>
+        </div>
+
+        <div class="col-6">
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Supplier</mat-label>
+              <mat-select placeholder="Select a supplier" name="supplier" [formControl]="supplierControl"
+                          [(ngModel)]="product.supplier" required>
+                <mat-option *ngFor="let supplier of suppliers" [value]="supplier">
+                  {{ supplier.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Location in storage</mat-label>
+              <input matInput placeholder="Location in storage" [(ngModel)]="product.locationInStorage"
+                     name="locationInStorage" required>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-10">
+              <mat-label>Best-before date</mat-label>
+              <input matInput [matDatepicker]="picker" placeholder="Best-before date"
+                     [(ngModel)]="product.bestBeforeDate"
+                     name="bestBeforeDate" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+          </p>
+          <div style="display:flex;">
+            <p style="margin-right: 10px">
+              <mat-form-field appearance="outline" style="width: 100px !important;">
+                <mat-label>Price</mat-label>
+                <input matInput placeholder="Price" [(ngModel)]="product.price" name="productActualPrice" required>
+              </mat-form-field>
+            </p>
+            <p style="margin-right: 10px">
+              <mat-form-field appearance="outline" style="width: 100px !important;">
+                <mat-label>Amount</mat-label>
+                <input  matInput placeholder="Amount" [(ngModel)]="product.quantity" name="productQuantity" required >
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline" style="width: 200px !important;">
+                <mat-label>Wybierz jednostkę</mat-label>
+                <mat-select placeholder="Wybierz jednostkę" [(ngModel)]="product.unit" name="jednostka" required>
+                  <mat-option *ngFor="let unit of units" [value]="unit">
+                    {{ unit }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </p>
+
+
+          </div>
+        </div>
+        <div class="w-100" style="display: flex; justify-content: space-between">
+          <button class="container" type="button" routerLink="/main" mat-stroked-button color="warn"
+                  style="width: 20%"><- Return</button>
+          <button
+            type="button" class="container w-25"
+            mat-stroked-button color="primary
+" style="margin-right: 3px;"
+            (click)="clearForm(productForm)">Clear
+          </button>
+          <button class="container w-25" type="submit" mat-stroked-button color="primary" [disabled]="productForm.invalid">Add product</button>
+          <button class="container" type="submit" mat-stroked-button color="primary" style="width: 20%">Upload CSV file</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
