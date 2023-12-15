@@ -31,6 +31,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final UserMapper userMapper;
 
+
     @Transactional
     public ProductResponse saveNewProduct(ProductRequest productRequest) {
 
@@ -100,4 +101,14 @@ public class ProductService {
     }
 
 
+    public ProductResponse getProductDetails(Long productId) {
+        Optional<ProductEntity> productById = productJpaRepository.findById(productId);
+        if (productById.isEmpty()) {
+            throw new ProductNotFoundException(
+                    String.format("Product with id [%s] does not exists!", productId));
+        } else {
+            return productMapper.mapFromEntity(productById.get());
+        }
+
+    }
 }

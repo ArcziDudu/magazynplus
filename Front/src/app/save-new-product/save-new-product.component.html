@@ -19,7 +19,8 @@
           <p>
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Product category</mat-label>
-              <input matInput placeholder="Product category" [(ngModel)]="product.category" name="productCategory" required>
+              <input matInput placeholder="Product category" [(ngModel)]="product.category" name="productCategory"
+                     required/>
             </mat-form-field>
           </p>
           <p>
@@ -72,7 +73,7 @@
             <p style="margin-right: 10px">
               <mat-form-field appearance="outline" style="width: 100px !important;">
                 <mat-label>Amount</mat-label>
-                <input  matInput placeholder="Amount" [(ngModel)]="product.quantity" name="productQuantity" required >
+                <input matInput placeholder="Amount" [(ngModel)]="product.quantity" name="productQuantity" required>
               </mat-form-field>
             </p>
             <p>
@@ -91,15 +92,20 @@
         </div>
         <div class="w-100" style="display: flex; justify-content: space-between">
           <button class="container" type="button" routerLink="/main" mat-stroked-button color="warn"
-                  style="width: 20%"><- Return</button>
+                  style="width: 20%"><- Return
+          </button>
           <button
             type="button" class="container w-25"
             mat-stroked-button color="primary
 " style="margin-right: 3px;"
             (click)="clearForm(productForm)">Clear
           </button>
-          <button class="container w-25" type="submit" mat-stroked-button color="primary" [disabled]="productForm.invalid">Add product</button>
-          <button class="container" type="submit" mat-stroked-button color="primary" style="width: 20%">Upload CSV file</button>
+          <button class="container w-25" type="submit" mat-stroked-button color="primary"
+                  [disabled]="productForm.invalid" *ngIf="isNewProduct" >Add product
+          </button>
+          <button class="container" type="submit" mat-stroked-button color="primary" style="width: 20%">Upload CSV
+            file
+          </button>
         </div>
       </div>
     </form>

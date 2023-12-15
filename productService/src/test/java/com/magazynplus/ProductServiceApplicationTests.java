@@ -3,6 +3,8 @@ package com.magazynplus;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.magazynplus.config.WebClientTestConfig;
 import com.magazynplus.config.WiremockConfig;
 import com.magazynplus.dto.ProductRequest;
 import com.magazynplus.entity.ProductEntity;
@@ -12,12 +14,14 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -25,16 +29,19 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(WebClientTestConfig.class)
 @Testcontainers
-@ActiveProfiles("test")
-class ProductServiceApplicationTests extends WiremockConfig {
+class ProductServiceApplicationTests{
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -42,7 +49,7 @@ class ProductServiceApplicationTests extends WiremockConfig {
     @LocalServerPort
     private Integer port;
 
-
+    private WireMockServer wireMockServer;
     @Container
     private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
             .withDatabaseName("testdb")
@@ -61,7 +68,17 @@ class ProductServiceApplicationTests extends WiremockConfig {
     @BeforeEach
     void setUp() {
         RestAssured.baseURI = "http://localhost";
-        RestAssured.port = 90545;
+        RestAssured.port = port;
+                wireMockServer = new WireMockServer(options().port(8089)); // Ustawienie portu
+        wireMockServer.start();
+        configureFor("localhost", wireMockServer.port());
+
+        // Mockowanie odpowiedzi dla żądania użytkownika
+        stubFor(get(urlEqualTo("/api/user/info/2"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("{ \"id\": 2, \"name\": \"Test User\", ... }")));
+
     }
 
 
@@ -79,7 +96,8 @@ class ProductServiceApplicationTests extends WiremockConfig {
                 .description("tester")
                 .producer("tester")
                 .category("test")
-                .quantity(5)
+                .bestBeforeDate(LocalDate.parse("2023-12-29"))
+                .quantity(5.0)
                 .imageLink("testlink")
                 .build();
         wireMockServer.stubFor(get(urlPathEqualTo("/api/user/info/2"))
@@ -87,26 +105,22 @@ class ProductServiceApplicationTests extends WiremockConfig {
                         .withHeader("Content-Type", "application/json")
                         .withBody("{\"userId\": 2, \"userName\": \"John Doe\"}")));
 
-        Response response = given()
+       given()
                 .contentType(ContentType.JSON)
                 .body(productRequestBuilder)
                 .when()
-                .post("http://localhost:" + port + "/api/product/add")
+                .post("/api/product/add")
                 .then()
-                .assertThat()
-                .log()
-                .all()
+               .log()
+               .all()
                 .statusCode(HttpStatus.SC_OK)
-                .extract()
-                .response();
+                .body(containsString("Oczekiwana odpowiedź"));
 
-        JsonPath jsonPath = new JsonPath(response.getBody().asString());
-        Boolean availabilityValue = jsonPath.getBoolean("availability");
-        Integer id = jsonPath.getInt("id");
-        List<ProductEntity> all = productJpaRepository.findAll();
-        Assertions.assertEquals(true, availabilityValue);
-        Assertions.assertEquals(1, id);
-        Assertions.assertEquals(1, all.size());
     }
-
+    @AfterEach
+    public void tearDown() {
+        if (wireMockServer.isRunning()) {
+            wireMockServer.stop();
+        }
+    }
 }

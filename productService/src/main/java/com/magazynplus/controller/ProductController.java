@@ -39,5 +39,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAllByUser(userId, page));
     }
 
+    @GetMapping(value = "/details/{productId}")
+    public ResponseEntity<ProductResponse> getProductDetails(@PathVariable Long productId){
+        return ResponseEntity.ok(productService.getProductDetails(productId));
+    }
 
 }

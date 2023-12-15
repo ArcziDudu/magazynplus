@@ -21,7 +21,7 @@
         <div style="align-self: flex-end; justify-self: flex-start; margin-bottom: 5px">
 
           <button class="new-product" routerLink="/product/save">Add new product +</button>
-          <button  class="new-product" routerLink="/supliers" >Supliers</button>
+          <button  class="new-product" routerLink="/suppliers" >Suppliers</button>
         </div>
         <div style="align-self: flex-end; margin-bottom: 5px">
           <button class="page-button" (click)="previousPage()" [disabled]="page === 0"><-previous page</button>
@@ -68,7 +68,7 @@
             <button mat-icon-button color="warn" style="margin-right: 5px" (click)="openDialog(element.id)">
               <mat-icon> delete </mat-icon>
             </button>
-            <button mat-icon-button color="primary" >
+            <button mat-icon-button color="primary" (click)="editProductDetails(element.id)">
               <mat-icon>edit</mat-icon>
             </button>
           </td>

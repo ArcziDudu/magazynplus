@@ -27,4 +27,8 @@ export class ProductApiService {
 
     return this.http.delete("http://localhost:8081/api/product/delete/"+productId);
   }
+
+  getProductDetails(id: number){
+    return this.http.get<Product>("http://localhost:8081/api/product/details/"+ id);
+  }
 }

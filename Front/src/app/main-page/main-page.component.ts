@@ -4,6 +4,7 @@ import {Product} from "../_model/Product";
 import {ProductApiService} from "../api/product-api.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-main-page',
@@ -14,15 +15,16 @@ import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-d
 @Injectable()
 export class MainPageComponent implements OnInit {
 
-
-  constructor(private webApiService: WebApiService, private productApiService: ProductApiService, private dialog: MatDialog) {
+  constructor(private webApiService: WebApiService,
+              private productApiService: ProductApiService,
+              private router: Router,
+              private dialog: MatDialog,
+  private route: ActivatedRoute){
 
   }
 
   userProducts: Product[] = [];
   displayedColumns = ['Id', 'Name', 'Category', 'Producer', 'Price', 'Quantity', 'Availability', 'Actions'];
-
-
   productArraySize = 0;
 
   nextPage() {
@@ -90,6 +92,13 @@ export class MainPageComponent implements OnInit {
       }
     });
   }
+  editProductDetails(productId: number) {
+    console.log('Navigating to edit product with productId:', productId);
 
+    this.router.navigate(['/product/edit', { productId: productId }]);
+
+    // Log the current route's snapshot
+    console.log('Current route snapshot:', this.route.snapshot);
+  }
 
 }

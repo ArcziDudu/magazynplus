@@ -1,0 +1,64 @@
+<div class="container" style="margin-top: 150px; max-height: 100%; z-index: 9999; width: 80%">
+  <div class="card p-2">
+    <form #productForm="ngForm">
+      <div class="row">
+        <div class="col-6">
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Supplier name</mat-label>
+              <input matInput placeholder="Supplier name" name="supplierName" required>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Supplier addres</mat-label>
+              <input matInput placeholder="supplier address"
+                     name="supplierAddress" required>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Postal code</mat-label>
+              <input matInput placeholder="Postal code" name="postalCode"
+                     required/>
+            </mat-form-field>
+          </p>
+        </div>
+        <div class="col-6">
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Supplier email address</mat-label>
+              <input matInput placeholder="Supplier email address" name="supplierEmail" required>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Supplier phone number</mat-label>
+              <input matInput placeholder="Supplier phone number" name="supplierPhoneNumber" required>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Supplier nip number</mat-label>
+              <input matInput placeholder="Supplier nip number" name="supplierNip" required>
+            </mat-form-field>
+          </p>
+        </div>
+        <div class="w-100" style="display: flex; justify-content: space-between">
+          <button class="container" type="button" routerLink="/main" mat-stroked-button color="warn"
+                  style="width: 20%"><- Return
+          </button>
+          <button
+            type="button" class="container w-25"
+            mat-stroked-button color="primary
+" style="margin-right: 3px;"
+          >Clear
+          </button>
+          <button class="container w-25" type="submit" mat-stroked-button color="primary"
+                  [disabled]="productForm.invalid">Add supplier
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

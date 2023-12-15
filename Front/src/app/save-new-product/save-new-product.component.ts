@@ -30,7 +30,6 @@ export class SaveNewProductComponent implements OnInit {
     // ...
   ];
   units: string[] = ['szt.', 'kg', 'l', 'm2'];
-  isNewProduct = true;
   product: Product ={
     imageLink: "",
     quantity: 10,
@@ -43,11 +42,13 @@ export class SaveNewProductComponent implements OnInit {
     producer: "",
     id: 0,
     category: "",
-    locationInStorage: "",
+    locationInStorage: ""
   }
-
+  isNewProduct = true;
 
   ngOnInit(): void {
+    this.product = this.activatedRoute.snapshot.data['product'];
+
     if (this.product && this.product.id) {
       this.isNewProduct = false;
     }

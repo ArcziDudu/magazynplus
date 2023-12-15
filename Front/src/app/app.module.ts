@@ -28,6 +28,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {SuppliersComponent} from "./suppliers/suppliers.component";
 import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
+import {SaveNewSupplierComponent} from "./save-new-supplier/save-new-supplier.component";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from
     MainPageComponent,
     SaveNewProductComponent,
     SuppliersComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    SaveNewSupplierComponent
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,9 @@ import {UserInfoComponent} from "./user-info/user-info.component";
 import {HomeComponent} from "./home/home.component";
 import {MainPageComponent} from "./main-page/main-page.component";
 import {SaveNewProductComponent} from "./save-new-product/save-new-product.component";
+import {ProductResolverService} from "./product-resolver.service";
+import {SuppliersComponent} from "./suppliers/suppliers.component";
+import {SaveNewSupplierComponent} from "./save-new-supplier/save-new-supplier.component";
 
 const routes: Routes = [
   {
@@ -29,11 +32,26 @@ const routes: Routes = [
     path: 'product/save',
     component: SaveNewProductComponent,
     canActivate: [AuthGuard],
+    data: {roles: ['user']},
+    resolve: {
+      product: ProductResolverService
+    }
+  },
+  {
+    path: 'product/edit', component: SaveNewProductComponent,
+    resolve: {
+      product: ProductResolverService
+    }
+  },
+  {
+    path: 'suppliers',
+    component: SuppliersComponent,
+    canActivate: [AuthGuard],
     data: {roles: ['user']}
   },
   {
-    path: 'supplier',
-    component: SaveNewProductComponent,
+    path: 'suppliers/add',
+    component: SaveNewSupplierComponent,
     canActivate: [AuthGuard],
     data: {roles: ['user']}
   }
