@@ -1,6 +1,9 @@
 package com.magazynplus.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,9 +21,16 @@ public class SupplierEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String Name;
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("phone")
     private String phone;
+
+    @JsonProperty("address")
     private String address;
+
+    @JsonProperty("nip")
     private String nip;
 
     @ManyToOne

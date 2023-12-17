@@ -11,11 +11,20 @@ import java.util.UUID;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProductMapper {
-    @Mapping(target = "id", source = "entity.id")
-    @Mapping(target = "availability", source = "entity.availability")
-    @Mapping(target = "productNumber", source = "entity.productNumber")
-    @Mapping(target = "userId", source = "entity.user.id")
-    ProductResponse mapFromEntity(ProductEntity entity);
+   default ProductResponse mapFromEntity(ProductEntity entity){
+        return ProductResponse.builder()
+                .id(entity.getId())
+                .availability(entity.getAvailability())
+                .productNumber(entity.getProductNumber())
+                .userId(entity.getUser())
+                .name(entity.getName())
+                .category(entity.getCategory())
+                .producer(entity.getProducer())
+                .price(entity.getPrice())
+                .description(entity.getDescription())
+                .imageLink(entity.getImageLink())
+                .build();
+    }
     default ProductEntity mapFromRequest(ProductRequest request){
         return ProductEntity.builder()
                 .productNumber(String.valueOf(UUID.randomUUID()))

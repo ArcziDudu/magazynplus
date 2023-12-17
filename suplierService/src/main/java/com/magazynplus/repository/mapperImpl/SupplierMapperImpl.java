@@ -13,7 +13,7 @@ public class SupplierMapperImpl implements SupplierMapper{
     @Override
     public SupplierEntity mapFromRequest(SupplierRequest request) {
         return SupplierEntity.builder()
-                .Name(request.Name())
+                .name(request.name())
                 .phone(request.phone())
                 .address(request.address())
                 .nip(request.nip())

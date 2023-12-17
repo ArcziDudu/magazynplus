@@ -15,14 +15,12 @@
     <name>magazynplus</name>
     <description>magazynplus</description>
     <modules>
-        <module>backend</module>
         <module>productService</module>
         <module>common</module>
         <module>userService</module>
         <module>discoveryServer</module>
         <module>api-gateway</module>
         <module>suplierService</module>
-
     </modules>
 
     <properties>
@@ -34,12 +32,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
-        </dependency>
-        <dependency>
 
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>

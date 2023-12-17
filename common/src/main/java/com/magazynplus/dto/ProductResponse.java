@@ -17,5 +17,5 @@ public record ProductResponse(Long id,
                               Double quantity,
                               String description,
                               String imageLink,
-                              Long userId) {
+                              UserEntity userId) {
 }

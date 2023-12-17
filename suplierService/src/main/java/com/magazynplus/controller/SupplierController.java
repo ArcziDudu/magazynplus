@@ -16,7 +16,7 @@ public class SupplierController {
     private final SupplierService supplierService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<SupplierEntity> createNewSupplier(@RequestBody SupplierRequest request){
-        return ResponseEntity.ok(supplierService.createSupplier(request));
+    public void createNewSupplier(@RequestBody SupplierRequest request){
+   supplierService.createSupplier(request);
     }
 }
