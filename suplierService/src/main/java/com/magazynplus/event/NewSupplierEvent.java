@@ -1,5 +1,6 @@
 package com.magazynplus.event;
 
+import com.magazynplus.entity.SupplierEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
@@ -8,15 +9,15 @@ import org.springframework.context.ApplicationEvent;
 @Getter
 @Setter
 public class NewSupplierEvent extends ApplicationEvent {
-    private String orderNumber;
+    private SupplierEntity supplier;
 
-    public NewSupplierEvent(Object source, String orderNumber) {
+    public NewSupplierEvent(Object source, SupplierEntity supplier) {
         super(source);
-        this.orderNumber = orderNumber;
+        this.supplier = supplier;
     }
 
-    public NewSupplierEvent(String orderNumber) {
-        super(orderNumber);
-        this.orderNumber = orderNumber;
+    public NewSupplierEvent(SupplierEntity supplier) {
+        super(supplier);
+        this.supplier = supplier;
     }
 }

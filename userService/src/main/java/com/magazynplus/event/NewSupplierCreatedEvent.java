@@ -1,5 +1,6 @@
 package com.magazynplus.event;
 
+import com.magazynplus.entity.SupplierEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewSupplierCreatedEvent {
-    private String orderNumber;
+    private SupplierEntity supplier;
 }

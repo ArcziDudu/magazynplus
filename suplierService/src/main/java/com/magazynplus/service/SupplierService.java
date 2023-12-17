@@ -32,7 +32,7 @@ public class SupplierService {
         inventoryServiceObservation.lowCardinalityKeyValue("call", "inventory-service");
         inventoryServiceObservation.observe(() -> {
             supplierRepository.save(supplierEntity);
-            applicationEventPublisher.publishEvent(new NewSupplierEvent(this, "test"));
+            applicationEventPublisher.publishEvent(new NewSupplierEvent(this, supplierEntity));
 
         });
 
