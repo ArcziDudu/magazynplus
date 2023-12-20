@@ -33,7 +33,7 @@ public class ProductService {
 
 
     @Transactional
-    public ProductResponse saveNewProduct(ProductRequest productRequest) {
+    public ProductResponse saveNewProduct(ProductRequest productRequest, String jwtToken) {
 
         if (isProductExistsByBestBeforeDateAndByName(productRequest)) {
             log.info("Found product by name {} and best before date {}", productRequest.name(), productRequest.bestBeforeDate());
@@ -43,7 +43,7 @@ public class ProductService {
             return productMapper.mapFromEntity(productJpaRepository.save(product));
         }
         try {
-            UserResponse userResponse = fetchUserInfo();
+            UserResponse userResponse = fetchUserInfo(jwtToken);
             ProductEntity productEntity = productMapper.mapFromRequest(productRequest);
             productEntity.setUser(userMapper.mapFromRequest(userResponse));
             ProductEntity save = productJpaRepository.save((productEntity));
@@ -92,14 +92,14 @@ public class ProductService {
     }
 
     //fetching logged user details from UserService by id from keycloak
-    private UserResponse fetchUserInfo() throws UserNotFoundException {
+    private UserResponse fetchUserInfo(String jwtToken) throws UserNotFoundException {
         return webClientBuilder.build().get()
                 .uri("http://api-gateway/api/user/info/2")
+                .header("Authorization", "Bearer " + jwtToken)
                 .retrieve()
                 .bodyToMono(UserResponse.class)
                 .block();
     }
-
 
     public ProductResponse getProductDetails(Long productId) {
         Optional<ProductEntity> productById = productJpaRepository.findById(productId);

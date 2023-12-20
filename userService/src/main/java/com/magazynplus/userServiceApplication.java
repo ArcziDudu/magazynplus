@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.kafka.annotation.KafkaListener;
+
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -17,11 +17,5 @@ public class userServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(userServiceApplication.class, args);
     }
-    @KafkaListener(topics = "notificationTopic")
-    public void handleNotification(NewSupplierCreatedEvent newSupplierCreatedEvent) {
-        Observation.createNotStarted("on-message", this.observationRegistry).observe(() -> {
-            log.info("Got message <{}>", newSupplierCreatedEvent);
-        });
-        // send out an email notification
-    }
+
 }

@@ -32,19 +32,9 @@
         </div>
 
         <div class="col-6">
-          <p>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Supplier</mat-label>
-              <mat-select placeholder="Select a supplier" name="supplier" [formControl]="supplierControl"
-                          [(ngModel)]="product.supplier" required>
-                <mat-option *ngFor="let supplier of suppliers" [value]="supplier">
-                  {{ supplier.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
 
 
-          </p>
+
           <p>
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Location in storage</mat-label>
@@ -61,7 +51,16 @@
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
-
+          </p>
+          <p>
+            <mat-form-field appearance="outline" style="width: 200px !important;">
+              <mat-label>Supplier</mat-label>
+              <mat-select placeholder="Supplier" [(ngModel)]="product.supplier" name="supplier" required>
+                <mat-option *ngFor="let supplier of suppliers" [value]="supplier">
+                  {{ supplier }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </p>
           <div style="display:flex;">
             <p style="margin-right: 10px">
@@ -78,15 +77,14 @@
             </p>
             <p>
               <mat-form-field appearance="outline" style="width: 200px !important;">
-                <mat-label>Wybierz jednostkę</mat-label>
-                <mat-select placeholder="Wybierz jednostkę" [(ngModel)]="product.unit" name="jednostka" required>
+                <mat-label>Unit</mat-label>
+                <mat-select placeholder="Unit" [(ngModel)]="product.unit" name="unit" required>
                   <mat-option *ngFor="let unit of units" [value]="unit">
                     {{ unit }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
             </p>
-
 
           </div>
         </div>
@@ -102,6 +100,9 @@
           </button>
           <button class="container w-25" type="submit" mat-stroked-button color="primary"
                   [disabled]="productForm.invalid" *ngIf="isNewProduct" >Add product
+          </button>
+          <button class="container w-25" type="submit" mat-stroked-button color="primary"
+                  [disabled]="productForm.invalid" *ngIf="!isNewProduct" >Update product
           </button>
           <button class="container" type="submit" mat-stroked-button color="primary" style="width: 20%">Upload CSV
             file

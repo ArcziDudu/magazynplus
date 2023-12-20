@@ -21,15 +21,9 @@ export class SaveNewProductComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
   }
-
-  supplierControl = new FormControl();
-  suppliers = [
-    {id: 1, name: 'Supplier A'},
-    {id: 2, name: 'Supplier B'},
-    {id: 3, name: 'Supplier C'},
-    // ...
-  ];
-  units: string[] = ['szt.', 'kg', 'l', 'm2'];
+  suppliers: string[] = ['szt.', 'kg', 'l', 'm2'];
+  units: string[] = ['szt.', 'kg', 'l'];
+  isNewProduct = true;
   product: Product ={
     imageLink: "",
     quantity: 10,
@@ -37,14 +31,14 @@ export class SaveNewProductComponent implements OnInit {
     price:0,
     supplier: "",
     name: "",
-    bestBeforeDate: new NgbDate(0, 0, 0),
     description: "",
     producer: "",
     id: 0,
+    bestBeforeDate: new NgbDate(0, 0, 0),
     category: "",
-    locationInStorage: ""
+    locationInStorage: "",
   }
-  isNewProduct = true;
+
 
   ngOnInit(): void {
     this.product = this.activatedRoute.snapshot.data['product'];
@@ -57,8 +51,10 @@ export class SaveNewProductComponent implements OnInit {
   addProductForm(productForm: NgForm) {
 
     this.apiProduct.createProduct(this.product).subscribe(
+
       (response: Product) => {
         productForm.reset();
+
       },
       (error: HttpErrorResponse) => {
         console.log(error);

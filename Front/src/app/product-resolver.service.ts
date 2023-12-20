@@ -26,13 +26,13 @@ export class ProductResolverService implements Resolve<Product> {
   getProductDetails(): Product {
     return {
       imageLink: "",
-      quantity: 10,
+      quantity: 0,
       unit: '',
       price: 0,
       supplier: "",
       name: "",
-      bestBeforeDate: new NgbDate(0, 0, 0),
       description: "",
+      bestBeforeDate: new NgbDate(0, 0, 0),
       producer: "",
       id: 0,
       category: "",

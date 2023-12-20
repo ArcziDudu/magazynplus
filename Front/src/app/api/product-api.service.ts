@@ -22,7 +22,6 @@ export class ProductApiService {
   public createProduct(product: Product){
     return this.http.post<Product>("http://localhost:8081/api/product/add", product);
   }
-
   public deleteProduct(productId: number){
 
     return this.http.delete("http://localhost:8081/api/product/delete/"+productId);

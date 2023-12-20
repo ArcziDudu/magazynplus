@@ -11,18 +11,20 @@ import java.util.UUID;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProductMapper {
-   default ProductResponse mapFromEntity(ProductEntity entity){
+    default ProductResponse mapFromEntity(ProductEntity entity){
         return ProductResponse.builder()
                 .id(entity.getId())
                 .availability(entity.getAvailability())
                 .productNumber(entity.getProductNumber())
-                .userId(entity.getUser())
                 .name(entity.getName())
                 .category(entity.getCategory())
                 .producer(entity.getProducer())
                 .price(entity.getPrice())
                 .description(entity.getDescription())
-                .imageLink(entity.getImageLink())
+                .unit(entity.getUnit())
+                .quantity(entity.getQuantity())
+                .supplier(entity.getSupplier())
+                .bestBeforeDate(entity.getBestBeforeDate())
                 .build();
     }
     default ProductEntity mapFromRequest(ProductRequest request){
@@ -35,7 +37,7 @@ public interface ProductMapper {
                 .category(request.category())
                 .description(request.description())
                 .quantity(request.quantity())
-                .imageLink(request.imageLink())
+                .unit(request.unit())
                 .supplier(request.supplier())
                 .bestBeforeDate(request.bestBeforeDate())
                 .locationInStorage(request.locationInStorage())

@@ -13,11 +13,11 @@ public record ProductRequest(String name,
                              String producer,
                              BigDecimal price,
                              Double quantity,
-
                              String description,
                              Integer amount,
                              String imageLink,
                              String supplier,
+                             String unit,
                              String locationInStorage,
                              LocalDate bestBeforeDate) {
 

@@ -24,7 +24,7 @@ export class MainPageComponent implements OnInit {
   }
 
   userProducts: Product[] = [];
-  displayedColumns = ['Id', 'Name', 'Category', 'Producer', 'Price', 'Quantity', 'Availability', 'Actions'];
+  displayedColumns = ['Id', 'Name', 'Availability', 'Category', 'Producer','Supplier', 'Price', 'Quantity','Unit','BestBeforeDate', 'Actions', ];
   productArraySize = 0;
 
   nextPage() {

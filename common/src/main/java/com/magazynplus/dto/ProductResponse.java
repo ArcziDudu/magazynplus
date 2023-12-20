@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.With;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+
 @Builder
 @With
 public record ProductResponse(Long id,
@@ -13,9 +15,10 @@ public record ProductResponse(Long id,
                               String productNumber,
                               String category,
                               String producer,
+                              String supplier,
                               BigDecimal price,
                               Double quantity,
                               String description,
-                              String imageLink,
-                              UserEntity userId) {
+                              String unit,
+                              LocalDate bestBeforeDate) {
 }

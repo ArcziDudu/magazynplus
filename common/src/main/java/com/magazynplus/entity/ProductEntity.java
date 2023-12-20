@@ -27,10 +27,10 @@ public class ProductEntity {
     private String description;
     private Boolean availability;
     private String productNumber;
-    private String imageLink;
-    String supplier;
-    String locationInStorage;
-    LocalDate bestBeforeDate;
+    private String unit;
+    private String supplier;
+    private String locationInStorage;
+    private LocalDate bestBeforeDate;
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference

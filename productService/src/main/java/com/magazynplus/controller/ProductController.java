@@ -3,6 +3,7 @@ package com.magazynplus.controller;
 import com.magazynplus.dto.ProductRequest;
 import com.magazynplus.dto.ProductResponse;
 import com.magazynplus.service.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,17 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-    @PostMapping(value = "/add")
-    public ResponseEntity<ProductResponse> addNewProduct(@RequestBody ProductRequest productRequest) {
-        return ResponseEntity.ok(productService.saveNewProduct(productRequest.withBestBeforeDate(productRequest.bestBeforeDate().plusDays(1))));
+    @PostMapping("/add")
+    public ResponseEntity<ProductResponse> addNewProduct(@RequestBody ProductRequest productRequest, HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+
+            String jwtTokenString = authorizationHeader.substring(7);
+            return ResponseEntity.ok(productService
+                    .saveNewProduct
+                            (productRequest.withBestBeforeDate(productRequest.bestBeforeDate().plusDays(1)),jwtTokenString));
+        }
+        throw new RuntimeException("No Authorization header found");
     }
 
     @DeleteMapping(value = "/delete/{productId}")
