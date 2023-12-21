@@ -14,6 +14,7 @@ public interface UserMapper {
                 .firstname(entity.getFirstname())
                 .lastname(entity.getLastname())
                 .products(entity.getProducts())
+
                 .build();
     }
     default UserEntity mapFromRequest(UserResponse response){
@@ -22,6 +23,7 @@ public interface UserMapper {
                 .email(response.email())
                 .firstname(response.firstname())
                 .lastname(response.lastname())
+
                 .products(response.products())
                 .build();
     }

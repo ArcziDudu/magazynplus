@@ -57,6 +57,9 @@ public class SecurityConfig {
                 .route(r -> r.path("/api/product/**")
                         .filters(f -> f.filter(userExtractionFilter))
                         .uri("lb://product-service"))
+                .route(r -> r.path("/api/supplier/**")
+                        .filters(f -> f.filter(userExtractionFilter))
+                        .uri("lb://supplier-service"))
                 .build();
     }
 

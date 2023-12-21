@@ -23,6 +23,7 @@ public interface ProductMapper {
                 .description(entity.getDescription())
                 .unit(entity.getUnit())
                 .quantity(entity.getQuantity())
+                .locationInStorage(entity.getLocationInStorage())
                 .supplier(entity.getSupplier())
                 .bestBeforeDate(entity.getBestBeforeDate())
                 .build();

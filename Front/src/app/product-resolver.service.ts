@@ -25,9 +25,8 @@ export class ProductResolverService implements Resolve<Product> {
 
   getProductDetails(): Product {
     return {
-      imageLink: "",
       quantity: 0,
-      unit: '',
+      unit: "",
       price: 0,
       supplier: "",
       name: "",

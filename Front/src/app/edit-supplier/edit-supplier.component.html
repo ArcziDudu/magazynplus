@@ -1,0 +1,60 @@
+<div class="container" style="margin-top: 150px; max-height: 100%; z-index: 9999; width: 80%">
+  <div class="card p-2">
+    <form #supplierForm="ngForm" (ngSubmit)="editSupplierForm(supplierForm)">
+      <div class="row">
+        <div class="col-6">
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Name</mat-label>
+              <input matInput placeholder="Name" [(ngModel)]="supplier.name" name="Name" required>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Email</mat-label>
+              <input matInput placeholder="Email" [(ngModel)]="supplier.email" name="Email"
+                     required/>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Phone number</mat-label>
+              <input matInput placeholder="Phone number" [(ngModel)]="supplier.phoneNumber" name="phoneNumber" required>
+            </mat-form-field>
+          </p>
+        </div>
+
+        <div class="col-6">
+            <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Address</mat-label>
+                <input matInput placeholder="Address" [(ngModel)]="supplier.address"
+                       name="Address" required>
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Postal code</mat-label>
+                <input matInput placeholder="Postal code" [(ngModel)]="supplier.postalCode"
+                       name="PostalCode" required>
+              </mat-form-field>
+            </p>
+            <p style="margin-right: 10px">
+              <mat-form-field appearance="outline" >
+                <mat-label>Nip</mat-label>
+                <input matInput placeholder="Nip" [(ngModel)]="supplier.nip" name="nip" required>
+              </mat-form-field>
+            </p>
+          </div>
+        </div>
+        <div class="w-100" style="display: flex; justify-content: space-between">
+          <button class="container" type="button" routerLink="/suppliers" mat-stroked-button color="warn"
+                  style="width: 20%"><- Return
+          </button>
+          <button class="container w-25" type="submit" mat-stroked-button color="primary"
+                  [disabled]="supplierForm.invalid" >Update supplier
+          </button>
+      </div>
+    </form>
+  </div>
+</div>

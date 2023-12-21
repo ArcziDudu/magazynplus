@@ -1,4 +1,4 @@
-package com.magazynplus.config;
+package com.magazynplus.webClientService;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -7,7 +7,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
-
     @Bean
     @LoadBalanced
     public WebClient.Builder webClientBuilder(){

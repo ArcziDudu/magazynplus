@@ -1,66 +1,44 @@
 <div class="container" style="margin-top: 150px; display: flex;flex-direction: column; justify-content: center">
-  <div class="container button-bar " style="width: 300px;display: flex; justify-content: space-between">
-      <span class="paginator">< Previous</span>
-      <span  class="paginator">Next ></span>
-  </div>
   <div class="container button-bar mt-4" style="width: 300px;display: flex; justify-content: center">
   <span class="new-supplier"
-        routerLink="/suppliers/add"
-        style="background-color: #68e0cf; text-align: center">Add new supplier</span>
-</div>
-  <div class="main-suppliers container w-100 p-4"  >
-    <mat-card class="example-card " style="width: 200px; height: 300px">
-      <mat-card-header>
-        <mat-card-title>Shiba Inu</mat-card-title>
-        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        routerLink="/main"
+        style="background-color: #68e0cf; text-align: center"><- Return</span>
+    <span class="new-supplier"
+          routerLink="/suppliers/add"
+          style="background-color: #68e0cf; text-align: center">Add new supplier</span>
+  </div>
+  <div class="main-suppliers container w-100 p-2 "
+       style="height: 400px; display: flex; justify-content: space-between; flex-wrap: wrap; overflow: scroll">
+    <mat-card class="example-card" style="width: 300px; height: 300px; margin: 20px" *ngFor="let supplier of suppliers">
+      <mat-card-header style="display: flex; flex-direction: column; justify-content: center">
+        <mat-card-title>{{ supplier.name }}</mat-card-title>
+        <mat-card-subtitle>Email: {{ supplier.email }}</mat-card-subtitle>
+        <mat-card-subtitle>Phone number: {{ supplier.phoneNumber }}</mat-card-subtitle>
+        <mat-card-subtitle>Address: {{ supplier.address }}</mat-card-subtitle>
+        <mat-card-subtitle>Postal code: {{ supplier.postalCode }}</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content>
-        <p>This card indeterminates progress bar.</p>
-      </mat-card-content>
+
       <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
+        <button mat-button style="  position: relative;
+  background-color: #de3939 ;
+  padding: 10px;
+  border-radius: 20px;
+  color: white;
+  width: 100px;
+  margin-right: 10px;
+cursor: pointer;" (click)="openDialog(supplier.id, 'supplier')">DELETE
+        </button>
+        <button class="edit" mat-button style="  position: relative;
+  background-color: #1481b2 ;
+  padding: 10px;
+  border-radius: 20px;
+  color: white;
+  width: 100px;
+cursor: pointer;" (click)="editSupplier(supplier.id)">EDIT
+        </button>
       </mat-card-actions>
     </mat-card>
-    <mat-card class="example-card " style="width: 200px; height: 300px">
-      <mat-card-header>
-        <mat-card-title>Shiba Inu</mat-card-title>
-        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>This card indeterminates progress bar.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-    <mat-card class="example-card " style="width: 200px; height: 300px">
-      <mat-card-header>
-        <mat-card-title>Shiba Inu</mat-card-title>
-        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>This card indeterminates progress bar.</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-    <mat-card class="example-card " style=" width: 200px; height: 300px">
-      <mat-card-header>
-        <mat-card-title>Shiba Inu</mat-card-title>
-        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>This card indeterminates progress bar.</p>
-      </mat-card-content>
-      <mat-card-actions class="w-100" style="display: flex; justify-content: space-between; padding: 15px">
-        <button mat-button style="color: red">DELETE</button>
-        <button mat-button style="color: blue">EDIT</button>
-      </mat-card-actions>
-    </mat-card>
+
 
   </div>
 </div>

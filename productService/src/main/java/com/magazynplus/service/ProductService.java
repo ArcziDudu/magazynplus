@@ -10,13 +10,13 @@ import com.magazynplus.exception.UserNotFoundException;
 import com.magazynplus.mapper.ProductMapper;
 import com.magazynplus.mapper.UserMapper;
 import com.magazynplus.repository.ProductJpaRepository;
+import com.magazynplus.webClientService.UserInfoFetcherImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,15 +27,15 @@ import java.util.Optional;
 @Slf4j
 public class ProductService {
     private final ProductJpaRepository productJpaRepository;
-    private final WebClient.Builder webClientBuilder;
     private final ProductMapper productMapper;
     private final UserMapper userMapper;
+    private final UserInfoFetcherImpl userInfoFetcher;
 
 
     @Transactional
     public ProductResponse saveNewProduct(ProductRequest productRequest, String jwtToken) {
 
-        if (isProductExistsByBestBeforeDateAndByName(productRequest)) {
+        if (existsByBestBeforeDateAndNameAndUserId(productRequest)) {
             log.info("Found product by name {} and best before date {}", productRequest.name(), productRequest.bestBeforeDate());
             ProductEntity product = productJpaRepository.findByNameAndBestBeforeDate(productRequest.name(), productRequest.bestBeforeDate());
             product.setQuantity(product.getQuantity() + productRequest.quantity());
@@ -43,7 +43,7 @@ public class ProductService {
             return productMapper.mapFromEntity(productJpaRepository.save(product));
         }
         try {
-            UserResponse userResponse = fetchUserInfo(jwtToken);
+            UserResponse userResponse = userInfoFetcher.fetchUserInfo(jwtToken);
             ProductEntity productEntity = productMapper.mapFromRequest(productRequest);
             productEntity.setUser(userMapper.mapFromRequest(userResponse));
             ProductEntity save = productJpaRepository.save((productEntity));
@@ -62,8 +62,8 @@ public class ProductService {
 
     @Transactional
     public void deleteProductById(Long productId) {
-        Optional<ProductEntity> productById = productJpaRepository.findById(productId);
-        if (productById.isEmpty()) {
+
+        if (!productJpaRepository.existsById(productId)) {
             throw new ProductNotFoundException(
                     String.format("Product with id [%s] does not exists!", productId));
         } else {
@@ -87,19 +87,10 @@ public class ProductService {
     }
 
     //if product with the same name and best before date exists, only update amount of product
-    private boolean isProductExistsByBestBeforeDateAndByName(ProductRequest request) {
-        return productJpaRepository.existsByBestBeforeDateAndName(request.bestBeforeDate(), request.name());
+    private boolean existsByBestBeforeDateAndNameAndUserId(ProductRequest request) {
+        return productJpaRepository.existsByBestBeforeDateAndNameAndUserId(request.bestBeforeDate(), request.name(), 2);
     }
 
-    //fetching logged user details from UserService by id from keycloak
-    private UserResponse fetchUserInfo(String jwtToken) throws UserNotFoundException {
-        return webClientBuilder.build().get()
-                .uri("http://api-gateway/api/user/info/2")
-                .header("Authorization", "Bearer " + jwtToken)
-                .retrieve()
-                .bodyToMono(UserResponse.class)
-                .block();
-    }
 
     public ProductResponse getProductDetails(Long productId) {
         Optional<ProductEntity> productById = productJpaRepository.findById(productId);
@@ -109,6 +100,25 @@ public class ProductService {
         } else {
             return productMapper.mapFromEntity(productById.get());
         }
+    }
 
+    @Transactional
+    public ProductResponse editProduct(ProductRequest productRequest) {
+        ProductEntity productEntity = productJpaRepository.findById(productRequest.id()).orElseThrow(()
+                -> new ProductNotFoundException(String.format("Product with id [%s] does not exists!", productRequest.id())));
+
+        productEntity.setName(productRequest.name());
+        productEntity.setQuantity(productRequest.quantity());
+        productEntity.setLocationInStorage(productRequest.locationInStorage());
+        productEntity.setDescription(productRequest.description());
+        productEntity.setProducer(productRequest.producer());
+        productEntity.setBestBeforeDate(productRequest.bestBeforeDate());
+        productEntity.setPrice(productRequest.price());
+        productEntity.setUnit(productRequest.unit());
+        productEntity.setSupplier(productRequest.supplier());
+        ProductResponse responseForEditAction = productMapper.mapFromEntity(productJpaRepository.save(productEntity));
+
+        log.info("Product with id {} has been edit successfully", productRequest.id());
+        return responseForEditAction;
     }
 }

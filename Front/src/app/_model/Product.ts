@@ -11,6 +11,5 @@ export interface Product {
   unit: string,
   supplier: string;
   locationInStorage: string;
-  imageLink: string;
   bestBeforeDate: NgbDate;
 }

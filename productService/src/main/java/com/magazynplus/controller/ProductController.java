@@ -31,6 +31,14 @@ public class ProductController {
         throw new RuntimeException("No Authorization header found");
     }
 
+    @PatchMapping("/edit")
+    public ResponseEntity<ProductResponse> editProduct(@RequestBody ProductRequest productRequest) {
+
+            return ResponseEntity.ok(productService.editProduct(productRequest));
+
+    }
+
+
     @DeleteMapping(value = "/delete/{productId}")
     public ResponseEntity<Void> deleteProductById(@PathVariable Long productId) {
         productService.deleteProductById(productId);
@@ -52,5 +60,6 @@ public class ProductController {
     public ResponseEntity<ProductResponse> getProductDetails(@PathVariable Long productId){
         return ResponseEntity.ok(productService.getProductDetails(productId));
     }
+
 
 }

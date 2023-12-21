@@ -17,13 +17,7 @@ public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long>
 
     List<ProductEntity> findByUserId(Integer userId, Pageable pageable);
 
-   List<ProductEntity> findByName(String name);
-
-    boolean existsByName(String name);
-
-    boolean existsByBestBeforeDate(LocalDate localDate);
-
-    boolean existsByBestBeforeDateAndName(LocalDate localDate, String name);
+    boolean existsByBestBeforeDateAndNameAndUserId(LocalDate bestBeforeDate, String name, Integer userId);
 
     ProductEntity findByNameAndBestBeforeDate(String name, LocalDate localDate);
 }

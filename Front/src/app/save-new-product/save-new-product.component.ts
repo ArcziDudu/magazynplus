@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, NgForm} from "@angular/forms";
+import {FormGroup, NgForm} from "@angular/forms";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 import {Product} from "../_model/Product";
 import {ProductApiService} from "../api/product-api.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
-
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -21,14 +20,14 @@ export class SaveNewProductComponent implements OnInit {
     private activatedRoute: ActivatedRoute) {
 
   }
+
   suppliers: string[] = ['szt.', 'kg', 'l', 'm2'];
   units: string[] = ['szt.', 'kg', 'l'];
   isNewProduct = true;
-  product: Product ={
-    imageLink: "",
-    quantity: 10,
-    unit: '',
-    price:0,
+  product: Product = {
+    quantity: 0,
+    unit: "",
+    price: 0,
     supplier: "",
     name: "",
     description: "",
@@ -51,7 +50,6 @@ export class SaveNewProductComponent implements OnInit {
   addProductForm(productForm: NgForm) {
 
     this.apiProduct.createProduct(this.product).subscribe(
-
       (response: Product) => {
         productForm.reset();
 
@@ -61,6 +59,7 @@ export class SaveNewProductComponent implements OnInit {
       }
     );
   }
+
   clearForm(productForm: NgForm) {
     productForm.reset();
   }

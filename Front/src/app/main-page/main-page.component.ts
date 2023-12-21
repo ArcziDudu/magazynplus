@@ -5,6 +5,7 @@ import {ProductApiService} from "../api/product-api.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {ActivatedRoute, Router} from "@angular/router";
+import {window} from "rxjs";
 
 @Component({
   selector: 'app-main-page',
@@ -24,9 +25,8 @@ export class MainPageComponent implements OnInit {
   }
 
   userProducts: Product[] = [];
-  displayedColumns = ['Id', 'Name', 'Availability', 'Category', 'Producer','Supplier', 'Price', 'Quantity','Unit','BestBeforeDate', 'Actions', ];
+  displayedColumns = ['Id', 'Name', 'Availability', 'Category', 'Producer','Supplier', 'Location','Price', 'Quantity','Unit','BestBeforeDate', 'Actions', ];
   productArraySize = 0;
-
   nextPage() {
     this.page++;
     this.loadNextPage();
@@ -65,21 +65,22 @@ export class MainPageComponent implements OnInit {
   }
 
   search(searchKey: string) {
-    console.log(searchKey);
+
     this.productApiService.getProduct(searchKey).subscribe(data => {
       this.userProducts = data;
       this.productArraySize = this.userProducts.length;
-      console.log(data)
     });
   }
 
 
-  openDialog(id: number) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+  openDialog(item: any, type: string) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { type: type, id: item.id }
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productApiService.deleteProduct(id).subscribe(
+        this.productApiService.deleteProduct(item).subscribe(
           () => {
             this.ngOnInit();
           },
@@ -97,8 +98,6 @@ export class MainPageComponent implements OnInit {
 
     this.router.navigate(['/product/edit', { productId: productId }]);
 
-    // Log the current route's snapshot
-    console.log('Current route snapshot:', this.route.snapshot);
   }
 
 }

@@ -1,6 +1,7 @@
 package com.magazynplus.repository.mapperImpl;
 
 import com.magazynplus.dto.SupplierRequest;
+import com.magazynplus.dto.SupplierResponse;
 import com.magazynplus.entity.SupplierEntity;
 import com.magazynplus.repository.mapper.SupplierMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,24 @@ public class SupplierMapperImpl implements SupplierMapper{
     public SupplierEntity mapFromRequest(SupplierRequest request) {
         return SupplierEntity.builder()
                 .name(request.name())
-                .phone(request.phone())
+                .phoneNumber(request.phoneNumber())
+                .email(request.email())
                 .address(request.address())
+                .postalCode(request.postalCode())
                 .nip(request.nip())
+                .build();
+    }
+
+    @Override
+    public SupplierResponse mapFromEntity(SupplierEntity save) {
+        return SupplierResponse.builder()
+                .id(save.getId())
+                .name(save.getName())
+                .phoneNumber(save.getPhoneNumber())
+                .postalCode(save.getPostalCode())
+                .address(save.getAddress())
+                .email(save.getEmail())
+                .nip(save.getNip())
                 .build();
     }
 }

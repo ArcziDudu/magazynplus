@@ -29,6 +29,8 @@ import {SuppliersComponent} from "./suppliers/suppliers.component";
 import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {SaveNewSupplierComponent} from "./save-new-supplier/save-new-supplier.component";
+import {EditProductComponent} from "./edit-product/edit-product.component";
+import {EditSupplierComponent} from "./edit-supplier/edit-supplier.component";
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import {SaveNewSupplierComponent} from "./save-new-supplier/save-new-supplier.co
     SaveNewProductComponent,
     SuppliersComponent,
     ConfirmationDialogComponent,
-    SaveNewSupplierComponent
+    SaveNewSupplierComponent,
+    EditProductComponent,
+    EditSupplierComponent
   ],
   imports: [
     BrowserModule,

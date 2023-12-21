@@ -19,6 +19,7 @@ public record ProductResponse(Long id,
                               BigDecimal price,
                               Double quantity,
                               String description,
+                              String locationInStorage,
                               String unit,
                               LocalDate bestBeforeDate) {
 }

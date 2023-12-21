@@ -34,6 +34,6 @@ public class UserEntity {
     @JsonManagedReference
     private List<ProductEntity> products;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<SupplierEntity> suppliers;
 }

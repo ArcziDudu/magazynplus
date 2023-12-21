@@ -9,6 +9,11 @@ import {SaveNewProductComponent} from "./save-new-product/save-new-product.compo
 import {ProductResolverService} from "./product-resolver.service";
 import {SuppliersComponent} from "./suppliers/suppliers.component";
 import {SaveNewSupplierComponent} from "./save-new-supplier/save-new-supplier.component";
+import {EditProductComponent} from "./edit-product/edit-product.component";
+import {EditSupplierComponent} from "./edit-supplier/edit-supplier.component";
+import {SupplierResolverService} from "./supplier-resolver.service";
+
+
 
 const routes: Routes = [
   {
@@ -38,7 +43,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'product/edit', component: SaveNewProductComponent,
+    path: 'product/edit', component: EditProductComponent,
     resolve: {
       product: ProductResolverService
     }
@@ -54,7 +59,13 @@ const routes: Routes = [
     component: SaveNewSupplierComponent,
     canActivate: [AuthGuard],
     data: {roles: ['user']}
-  }
+  },
+  {
+    path: 'supplier/edit', component: EditSupplierComponent,
+    resolve: {
+      supplier: SupplierResolverService
+    }
+  },
 ];
 
 @NgModule({

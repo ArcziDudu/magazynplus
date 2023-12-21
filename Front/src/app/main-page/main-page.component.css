@@ -74,3 +74,7 @@ table {
   background-color: rgba(66, 213, 213, 0.51);
 }
 
+.mat-mdc-row:hover {
+  background-color: #61eace !important;
+  cursor: pointer;
+}

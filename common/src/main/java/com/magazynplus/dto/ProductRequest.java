@@ -8,7 +8,8 @@ import java.time.LocalDate;
 
 @Builder
 @With
-public record ProductRequest(String name,
+public record ProductRequest(Long id,
+                             String name,
                              String category,
                              String producer,
                              BigDecimal price,
