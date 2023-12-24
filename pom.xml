@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.magazynplus</groupId>
     <artifactId>magazynplus</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1</version>
     <packaging>pom</packaging>
     <name>magazynplus</name>
     <description>magazynplus</description>

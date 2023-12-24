@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -26,15 +24,16 @@ public class ProductController {
             String jwtTokenString = authorizationHeader.substring(7);
             return ResponseEntity.ok(productService
                     .saveNewProduct
-                            (productRequest.withBestBeforeDate(productRequest.bestBeforeDate().plusDays(1)),jwtTokenString));
+                            (productRequest.withBestBeforeDate(productRequest.bestBeforeDate().plusDays(1)), jwtTokenString));
         }
         throw new RuntimeException("No Authorization header found");
     }
 
+
     @PatchMapping("/edit")
     public ResponseEntity<ProductResponse> editProduct(@RequestBody ProductRequest productRequest) {
 
-            return ResponseEntity.ok(productService.editProduct(productRequest));
+        return ResponseEntity.ok(productService.editProduct(productRequest));
 
     }
 
@@ -57,7 +56,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/details/{productId}")
-    public ResponseEntity<ProductResponse> getProductDetails(@PathVariable Long productId){
+    public ResponseEntity<ProductResponse> getProductDetails(@PathVariable Long productId) {
         return ResponseEntity.ok(productService.getProductDetails(productId));
     }
 

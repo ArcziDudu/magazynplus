@@ -1,4 +1,4 @@
-package com.magazynplus.event;
+package com.magazynplus.events;
 
 import com.magazynplus.entity.SupplierEntity;
 import lombok.Getter;

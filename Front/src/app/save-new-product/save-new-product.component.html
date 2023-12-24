@@ -53,14 +53,16 @@
             </mat-form-field>
           </p>
           <p>
-            <mat-form-field appearance="outline" style="width: 200px !important;">
+            <mat-form-field appearance="outline" style="width: 100% !important;">
               <mat-label>Supplier</mat-label>
               <mat-select placeholder="Supplier" [(ngModel)]="product.supplier" name="supplier" required>
-                <mat-option *ngFor="let supplier of suppliers" [value]="supplier">
-                  {{ supplier }}
+                <mat-option value="none">None</mat-option>
+                <mat-option *ngFor="let supplier of suppliers" [value]="supplier.name">
+                  {{ supplier.name }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
+
           </p>
           <div style="display:flex;">
             <p style="margin-right: 10px">

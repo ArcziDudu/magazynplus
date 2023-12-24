@@ -4,20 +4,18 @@
     <parent>
         <groupId>com.magazynplus</groupId>
         <artifactId>magazynplus</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1</version>
     </parent>
 
     <artifactId>api-gateway</artifactId>
-    <packaging>jar</packaging>
 
+    <packaging>jar</packaging>
     <name>api-gateway</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
@@ -38,6 +36,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
-
     </dependencies>
+
 </project>

@@ -1,6 +1,6 @@
 package com.magazynplus.listener;
 
-import com.magazynplus.event.NewSupplierEvent;
+import com.magazynplus.events.NewSupplierEvent;
 import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
@@ -18,18 +18,18 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 public class NewSupplierCreatedEvent {
 
-    private final KafkaTemplate<String, NewSupplierEvent> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObservationRegistry observationRegistry;
 
     @EventListener
-    public void handleOrderPlacedEvent(NewSupplierEvent event) {
-        log.info("Order Placed Event Received, Sending OrderPlacedEvent to notificationTopic: {}", event.getSupplier());
+    public void handleOrderPlacedEvent(String event) {
+        log.info("New user has been register, Sending data to register topic: {}", event);
 
         // Create Observation for Kafka Template
         try {
             Observation.createNotStarted("notification-topic", this.observationRegistry).observeChecked(() -> {
-                CompletableFuture<SendResult<String, NewSupplierEvent>> future = kafkaTemplate.send("notificationTopic",
-                        new NewSupplierEvent(event.getSupplier()));
+                CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send("register",
+                        new String(event));
                 return future.handle((result, throwable) -> CompletableFuture.completedFuture(result));
             }).get();
         } catch (InterruptedException | ExecutionException e) {

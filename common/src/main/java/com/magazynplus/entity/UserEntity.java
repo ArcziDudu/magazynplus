@@ -19,17 +19,13 @@ import java.util.Set;
 @ToString
 public class UserEntity {
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column
-    private String email;
-
-    @Column
     private String firstname;
-
-    @Column
     private String lastname;
+    private String email;
+    private String username;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     @JsonManagedReference
     private List<ProductEntity> products;

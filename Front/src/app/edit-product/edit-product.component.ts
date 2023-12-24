@@ -5,6 +5,8 @@ import {NgbDate} from "@ng-bootstrap/ng-bootstrap";
 import {ActivatedRoute} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ProductApiService} from "../api/product-api.service";
+import {Supplier} from "../_model/Supplier";
+import {SupplierApiService} from "../api/supplier-api.service";
 
 @Component({
   selector: 'app-edit-product',
@@ -13,7 +15,7 @@ import {ProductApiService} from "../api/product-api.service";
 })
 export class EditProductComponent implements OnInit {
 
-  suppliers: string[] = ['szt.', 'kg', 'l', 'm2'];
+  suppliers: Supplier[] = [];
   units: string[] = ['szt.', 'kg', 'l'];
   product: Product = {
     quantity: 0,
@@ -29,13 +31,27 @@ export class EditProductComponent implements OnInit {
     locationInStorage: "",
   }
 
-  constructor(private activatedRoute: ActivatedRoute, private apiProduct: ProductApiService) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private apiProduct: ProductApiService,
+              private apiSupplier: SupplierApiService) {
   }
 
   ngOnInit(): void {
+    this.fetchSuppliersData();
     this.product = this.activatedRoute.snapshot.data['product'];
   }
 
+  fetchSuppliersData() {
+    this.apiSupplier.getAllSuppliers().subscribe({
+      next: data => {
+        console.log(data)
+        this.suppliers = data;
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+  }
 
   editProductForm(productForm: NgForm) {
     this.apiProduct.updateProduct(this.product).subscribe(

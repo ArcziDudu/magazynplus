@@ -28,4 +28,6 @@ export class SupplierApiService {
   updateSupplier(supplier: Supplier) {
     return this.http.patch<Supplier>("http://localhost:8081/api/supplier/edit", supplier);
   }
+
+
 }

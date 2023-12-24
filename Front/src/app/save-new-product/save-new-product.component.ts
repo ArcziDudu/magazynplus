@@ -6,6 +6,8 @@ import {Product} from "../_model/Product";
 import {ProductApiService} from "../api/product-api.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import {SupplierApiService} from "../api/supplier-api.service";
+import {Supplier} from "../_model/Supplier";
 
 
 @Component({
@@ -16,12 +18,13 @@ import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 export class SaveNewProductComponent implements OnInit {
   constructor(
     private apiProduct: ProductApiService,
+    private apiSupplier: SupplierApiService,
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute) {
 
   }
 
-  suppliers: string[] = ['szt.', 'kg', 'l', 'm2'];
+  suppliers: Supplier[] = [];
   units: string[] = ['szt.', 'kg', 'l'];
   isNewProduct = true;
   product: Product = {
@@ -40,6 +43,8 @@ export class SaveNewProductComponent implements OnInit {
 
 
   ngOnInit(): void {
+   this.fetchSuppliersData();
+   console.log(this.suppliers)
     this.product = this.activatedRoute.snapshot.data['product'];
 
     if (this.product && this.product.id) {
@@ -51,6 +56,7 @@ export class SaveNewProductComponent implements OnInit {
 
     this.apiProduct.createProduct(this.product).subscribe(
       (response: Product) => {
+        console.log(response)
         productForm.reset();
 
       },
@@ -59,7 +65,17 @@ export class SaveNewProductComponent implements OnInit {
       }
     );
   }
-
+  fetchSuppliersData(){
+    this.apiSupplier.getAllSuppliers().subscribe({
+      next: data => {
+        console.log(data)
+        this.suppliers = data;
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+  }
   clearForm(productForm: NgForm) {
     productForm.reset();
   }
