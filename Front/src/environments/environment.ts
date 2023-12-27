@@ -4,7 +4,7 @@ export const environment = {
   apiUrl: '/api',
   keycloak: {
     // Url of the Identity Provider
-    issuer: 'http://localhost:9990',
+    issuer: 'http://localhost:8080',
     // Realm
     realm: 'magazynplus',
     clientId: 'frontend'
