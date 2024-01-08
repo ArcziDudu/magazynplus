@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
-import { ProductApiService } from "./api/product-api.service";
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
-import { map, Observable, of } from "rxjs";
-import { Product } from "./_model/Product";
-import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
+import {Injectable} from '@angular/core';
+import {ProductApiService} from "./api/product-api.service";
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
+import {Observable, of} from "rxjs";
+import {Product} from "./_model/Product";
+import {NgbDate} from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductResolverService implements Resolve<Product> {
 
-  constructor(private productService: ProductApiService) { }
+  constructor(private productService: ProductApiService) {
+  }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Product> {
     const id = route.paramMap.get("productId");

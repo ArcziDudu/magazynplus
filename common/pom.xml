@@ -4,16 +4,16 @@
     <parent>
         <groupId>com.magazynplus</groupId>
         <artifactId>magazynplus</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1</version>
     </parent>
 
     <artifactId>common</artifactId>
-    <packaging>jar</packaging>
-
 
     <properties>
-        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
+
 
     <dependencies>
         <dependency>
@@ -48,5 +48,22 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.8</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exe</classifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

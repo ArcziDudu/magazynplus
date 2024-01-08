@@ -1,6 +1,5 @@
 .main {
   margin-top: 40px;
-  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center
@@ -18,12 +17,32 @@
   background-color: white
 }
 
-.card-title {
+
+.description {
+  text-align: center;
+}
+.info{
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.text-left{
+  loat: left;   position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 0 20px;
+}
+.text-right{
+  float: right;   position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 0 20px;
+}
+.title{
   font-size: x-large;
   text-align: center;
   color: white;
   margin-bottom: 20px
-}
-.description{
-  text-align: center;
 }

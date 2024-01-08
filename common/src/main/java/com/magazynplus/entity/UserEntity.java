@@ -1,11 +1,9 @@
 package com.magazynplus.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.*;
 
-import javax.swing.plaf.ListUI;
 import java.util.List;
 import java.util.Set;
 

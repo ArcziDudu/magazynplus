@@ -1,4 +1,4 @@
-.paginator{
+.paginator {
   padding: 4px;
   font-size: medium;
   border-top: 1px solid #045879;
@@ -12,10 +12,12 @@
   cursor: pointer;
   transition: .2s;
 }
-.paginator:hover{
+
+.paginator:hover {
   background-color: #32b5e8;
 }
-.main-suppliers{
+
+.main-suppliers {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -23,11 +25,13 @@
   min-height: 500px;
   background-color: rgba(34, 156, 208, 0.45);
 }
+
 .mat-mdc-card {
   position: relative;
   justify-content: space-evenly;
   align-items: center;
 }
+
 .new-supplier {
   min-width: 200px;
   margin-left: 20px;
@@ -44,9 +48,11 @@
   transition: .2s;
   cursor: pointer;
 }
-.new-supplier:hover{
+
+.new-supplier:hover {
   background-color: rgba(66, 213, 213, 0.51);
 }
+
 .mdc-button .mdc-button__label {
   position: relative;
   background-color: #00b7ff !important;

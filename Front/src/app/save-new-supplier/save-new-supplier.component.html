@@ -6,7 +6,7 @@
           <p>
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Supplier name</mat-label>
-              <input matInput placeholder="Supplier name" [(ngModel)]="supplier.name"  name="supplierName" required>
+              <input matInput placeholder="Supplier name" [(ngModel)]="supplier.name" name="supplierName" required>
             </mat-form-field>
           </p>
           <p>
@@ -28,13 +28,15 @@
           <p>
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Supplier email address</mat-label>
-              <input matInput placeholder="Supplier email address" [(ngModel)]="supplier.email" name="supplierEmail" required>
+              <input matInput placeholder="Supplier email address" [(ngModel)]="supplier.email" name="supplierEmail"
+                     required>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Supplier phone number</mat-label>
-              <input matInput placeholder="Supplier phone number" [(ngModel)]="supplier.phoneNumber" name="supplierPhoneNumber" required>
+              <input matInput placeholder="Supplier phone number" [(ngModel)]="supplier.phoneNumber"
+                     name="supplierPhoneNumber" required>
             </mat-form-field>
           </p>
           <p>
@@ -48,15 +50,20 @@
           <button class="container" type="button" routerLink="/suppliers" mat-stroked-button color="warn"
                   style="width: 20%"><- Return
           </button>
-          <button
-            type="button" class="container w-25"
-            mat-stroked-button color="primary
-" style="margin-right: 3px;"
-          >Clear
-          </button>
+          <button type="button" class="container w-25" mat-stroked-button color="primary"style="margin-right: 3px;">Clear</button>
           <button class="container w-25" type="submit" mat-stroked-button color="primary"
                   [disabled]="supplierForm.invalid">Add supplier
           </button>
+          <button class="container" type="button" mat-stroked-button color="primary" style="width: 20%"
+                  (click)="fileInput.click()">
+            Upload CSV file
+          </button>
+          <div *ngIf="loading" class="overlay">
+            <div *ngIf="loading" class="loading-spinner">
+              <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+            </div>
+          </div>
+          <input #fileInput type="file" style="display: none" (change)="onFileSelected($event)" accept=".csv"/>
         </div>
       </div>
     </form>

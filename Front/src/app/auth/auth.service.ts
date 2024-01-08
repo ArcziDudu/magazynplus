@@ -1,19 +1,26 @@
 import {Injectable} from "@angular/core";
 import {KeycloakService} from "keycloak-angular";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: "root"
 })
-export class  AuthService {
+export class AuthService {
 
-  constructor(private keycloakService: KeycloakService) { }
+  constructor(private keycloakService: KeycloakService,
+              private router: Router) {
+  }
 
   public getUsername(): string {
     return this.keycloakService.getUsername();
   }
 
-  public logout(): void {
-    this.keycloakService.logout().then(() => this.keycloakService.clearToken());
+  logout() {
+    this.keycloakService.logout().then(() => {
+      console.log('logout');
+    }).catch((error) => {
+      console.error('error', error);
+    });
   }
 
 }

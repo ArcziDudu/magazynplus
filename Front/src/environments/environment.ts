@@ -1,11 +1,8 @@
-
 export const environment = {
   production: false,
   apiUrl: '/api',
   keycloak: {
-    // Url of the Identity Provider
-    issuer: 'http://localhost:8080',
-    // Realm
+    issuer: 'http://keycloak:8080',
     realm: 'magazynplus',
     clientId: 'frontend'
   },

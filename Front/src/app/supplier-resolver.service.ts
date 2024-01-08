@@ -8,7 +8,7 @@ import {SupplierApiService} from "./api/supplier-api.service";
 @Injectable({
   providedIn: 'root'
 })
-export class SupplierResolverService implements Resolve<Supplier>  {
+export class SupplierResolverService implements Resolve<Supplier> {
 
   constructor(private supplierApi: SupplierApiService) {
   }

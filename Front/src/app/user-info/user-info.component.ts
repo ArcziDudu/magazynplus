@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../auth/auth.service";
 import {WebApiService} from "../api/web-api.service";
@@ -12,7 +12,8 @@ export class UserInfoComponent implements OnInit {
 
   message: string = 'null';
 
-  constructor(private authService: AuthService, private webApiService: WebApiService, private http: HttpClient) { }
+  constructor(private authService: AuthService, private webApiService: WebApiService, private http: HttpClient) {
+  }
 
   ngOnInit(): void {
     this.message = this.authService.getUsername();

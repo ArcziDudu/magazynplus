@@ -1,6 +1,5 @@
 package com.magazynplus.dto;
 
-import com.magazynplus.entity.UserEntity;
 import lombok.Builder;
 import lombok.With;
 

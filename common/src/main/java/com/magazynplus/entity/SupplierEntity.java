@@ -1,6 +1,7 @@
 package com.magazynplus.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.opencsv.bean.CsvBindByName;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,15 +20,24 @@ public class SupplierEntity {
     private Integer id;
 
     @JsonProperty("name")
+    @CsvBindByName(column = "name")
     private String name;
 
     @JsonProperty("phone")
+    @CsvBindByName(column = "phoneNumber")
     private String phoneNumber;
+
+    @CsvBindByName(column = "email")
     private String email;
+
     @JsonProperty("address")
+    @CsvBindByName(column = "address")
     private String address;
+
+    @CsvBindByName(column = "postalCode")
     private String postalCode;
 
+    @CsvBindByName(column = "nip")
     @JsonProperty("nip")
     private String nip;
 

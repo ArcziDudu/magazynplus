@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Supplier} from "../_model/Supplier";
 import {NgForm} from "@angular/forms";
-import {Product} from "../_model/Product";
 import {HttpErrorResponse} from "@angular/common/http";
 import {SupplierApiService} from "../api/supplier-api.service";
 

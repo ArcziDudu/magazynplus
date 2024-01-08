@@ -31,6 +31,7 @@ import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from
 import {SaveNewSupplierComponent} from "./save-new-supplier/save-new-supplier.component";
 import {EditProductComponent} from "./edit-product/edit-product.component";
 import {EditSupplierComponent} from "./edit-supplier/edit-supplier.component";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -47,38 +48,39 @@ import {EditSupplierComponent} from "./edit-supplier/edit-supplier.component";
     EditProductComponent,
     EditSupplierComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    KeycloakAngularModule,
-    HttpClientModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatCardModule,
-    MatDatepickerModule,
-    MatCardModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatButtonModule,
-    MatButtonModule,
-    MatDividerModule,
-    MatIconModule,
-    MatPaginatorModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        KeycloakAngularModule,
+        HttpClientModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTableModule,
+        MatCardModule,
+        MatDatepickerModule,
+        MatCardModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatButtonModule,
+        MatButtonModule,
+        MatDividerModule,
+        MatIconModule,
+        MatPaginatorModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatProgressSpinnerModule
+    ],
   providers: [
     {
       provide: APP_INITIALIZER,

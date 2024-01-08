@@ -16,10 +16,11 @@ public record ProductRequest(Long id,
                              Double quantity,
                              String description,
                              Integer amount,
-                             String imageLink,
                              String supplier,
                              String unit,
                              String locationInStorage,
-                             LocalDate bestBeforeDate) {
+                             LocalDate bestBeforeDate
+) {
+
 
 }

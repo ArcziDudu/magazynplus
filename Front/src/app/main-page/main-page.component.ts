@@ -5,7 +5,6 @@ import {ProductApiService} from "../api/product-api.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {ActivatedRoute, Router} from "@angular/router";
-import {window} from "rxjs";
 
 @Component({
   selector: 'app-main-page',
@@ -16,17 +15,18 @@ import {window} from "rxjs";
 @Injectable()
 export class MainPageComponent implements OnInit {
 
+
   constructor(private webApiService: WebApiService,
               private productApiService: ProductApiService,
               private router: Router,
-              private dialog: MatDialog,
-  private route: ActivatedRoute){
+              private dialog: MatDialog) {
 
   }
-
+  loading: boolean = false;
   userProducts: Product[] = [];
-  displayedColumns = ['Id', 'Name', 'Availability', 'Category', 'Producer','Supplier', 'Location','Price', 'Quantity','Unit','BestBeforeDate', 'Actions', ];
+  displayedColumns = [ 'Availability','Name', 'Category', 'Producer', 'Supplier', 'Location', 'Price', 'Quantity', 'Unit', 'BestBeforeDate', 'Actions',];
   productArraySize = 0;
+
   nextPage() {
     this.page++;
     this.loadNextPage();
@@ -53,10 +53,12 @@ export class MainPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading=true;
     this.productApiService.getProductPageable(this.page).subscribe({
       next: data => {
         this.userProducts = data;
         this.productArraySize = this.userProducts.length;
+        this.loading=false;
       },
       error: err => {
         console.log(err);
@@ -75,7 +77,7 @@ export class MainPageComponent implements OnInit {
 
   openDialog(item: any, type: string) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: { type: type, id: item.id }
+      data: {type: type, id: item.id}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -93,10 +95,11 @@ export class MainPageComponent implements OnInit {
       }
     });
   }
+
   editProductDetails(productId: number) {
     console.log('Navigating to edit product with productId:', productId);
 
-    this.router.navigate(['/product/edit', { productId: productId }]);
+    this.router.navigate(['/product/edit', {productId: productId}]);
 
   }
 

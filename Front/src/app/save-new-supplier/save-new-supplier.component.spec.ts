@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SaveNewSupplierComponent } from './save-new-supplier.component';
+import {SaveNewSupplierComponent} from './save-new-supplier.component';
 
 describe('SaveNewSupplierComponent', () => {
   let component: SaveNewSupplierComponent;
@@ -10,8 +10,8 @@ describe('SaveNewSupplierComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SaveNewSupplierComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(SaveNewSupplierComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

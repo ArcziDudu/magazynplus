@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, NgForm} from "@angular/forms";
+import {NgForm} from "@angular/forms";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 import {Product} from "../_model/Product";
@@ -8,6 +8,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {SupplierApiService} from "../api/supplier-api.service";
 import {Supplier} from "../_model/Supplier";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {FileApiService} from "../api/file-api.service";
 
 
 @Component({
@@ -16,14 +18,18 @@ import {Supplier} from "../_model/Supplier";
   styleUrl: './save-new-product.component.css'
 })
 export class SaveNewProductComponent implements OnInit {
+
   constructor(
     private apiProduct: ProductApiService,
     private apiSupplier: SupplierApiService,
+    private apiFile: FileApiService,
     private sanitizer: DomSanitizer,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private snackBar: MatSnackBar) {
 
   }
 
+  loading: boolean = false;
   suppliers: Supplier[] = [];
   units: string[] = ['szt.', 'kg', 'l'];
   isNewProduct = true;
@@ -43,8 +49,8 @@ export class SaveNewProductComponent implements OnInit {
 
 
   ngOnInit(): void {
-   this.fetchSuppliersData();
-   console.log(this.suppliers)
+    this.fetchSuppliersData();
+    console.log(this.suppliers)
     this.product = this.activatedRoute.snapshot.data['product'];
 
     if (this.product && this.product.id) {
@@ -53,19 +59,26 @@ export class SaveNewProductComponent implements OnInit {
   }
 
   addProductForm(productForm: NgForm) {
-
     this.apiProduct.createProduct(this.product).subscribe(
-      (response: Product) => {
-        console.log(response)
-        productForm.reset();
-
+      (response) => {
+        if (response === 'OK') {
+          console.log(response);
+          productForm.reset();
+          this.showSnackBar('Product created successfully');
+        } else if (response === 'NO_CONTENT') {
+          console.log(response);
+          productForm.reset();
+          this.showSnackBar('Same product found, quantity has been updated');
+        }
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
+        this.showSnackBar('Something went wrong, please check your form');
       }
     );
   }
-  fetchSuppliersData(){
+
+
+  fetchSuppliersData() {
     this.apiSupplier.getAllSuppliers().subscribe({
       next: data => {
         console.log(data)
@@ -76,8 +89,39 @@ export class SaveNewProductComponent implements OnInit {
       }
     });
   }
+
   clearForm(productForm: NgForm) {
     productForm.reset();
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    this.loading = true;
+    this.apiFile.uploadFile('productsFile',formData).subscribe(
+      (response) => {
+       if(response == 'OK'){
+         this.showSnackBar('File uploaded successfully');
+       }
+       else if (response == 'BAD_REQUEST')
+         this.showSnackBar('Something went wrong, please check your file');
+      },
+      (error) => {
+        this.loading = false;
+        this.showSnackBar('Something went wrong, please check your file');
+      },
+      () => {
+        this.loading = false;
+      }
+    )
+  }
+  private showSnackBar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 7000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
   }
 
 }

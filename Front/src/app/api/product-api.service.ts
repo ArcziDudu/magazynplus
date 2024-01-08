@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Product} from "../_model/Product";
 
@@ -16,11 +16,11 @@ export class ProductApiService {
 
   public getProductPageable(page: number): Observable<Product[]> {
 
-    return this.http.get<Product[]>("http://localhost:8081/api/product/all/" + 2 + "/" + page);
+    return this.http.get<Product[]>("http://localhost:8081/api/product/all/" + page);
   }
 
   public createProduct(product: Product) {
-    return this.http.post<Product>("http://localhost:8081/api/product/add", product);
+    return this.http.post("http://localhost:8081/api/product/add", product);
   }
 
   public deleteProduct(productId: number) {
@@ -33,5 +33,9 @@ export class ProductApiService {
 
   updateProduct(product: Product) {
     return this.http.patch<Product>("http://localhost:8081/api/product/edit", product);
+  }
+
+  uploadFile(fileType: string, formData: FormData) {
+    return this.http.post("http://localhost:8081/api/file/upload/" + fileType, formData);
   }
 }

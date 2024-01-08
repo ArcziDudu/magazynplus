@@ -1,29 +1,5 @@
 version: '3.2'
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-
-  broker:
-    image: confluentinc/cp-kafka:7.0.1
-    container_name: broker
-    ports:
-      - "9092:9092"
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
   mysql:
     image: mysql:5.7
     volumes:
@@ -33,10 +9,14 @@ services:
       MYSQL_DATABASE: keycloak
       MYSQL_USER: keycloak
       MYSQL_PASSWORD: password
+    networks:
+      - network
 
   keycloak:
-    build: .
-    command: start-dev
+    build:
+      context: ./keycloak-spi-listener
+    container_name: keycloak
+    command: ["start-dev", "--import-realm"]
     environment:
       DB_VENDOR: MYSQL
       DB_ADDR: mysql
@@ -45,27 +25,35 @@ services:
       DB_PASSWORD: password
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      environment:
-      KEYCLOAK_EVENT_LISTENER: "jboss-logging,event-listener"
+      KEYCLOAK_EVENT_LISTENER: "jboss-logging, event-listener"
     depends_on:
       - mysql
     ports:
       - "8080:8080"
+    volumes:
+      - ./realms/:/opt/keycloak/data/import/
+    networks:
+      network:
+        aliases:
+          - keycloak
+
 
   postgres:
     container_name: postgres
     image: postgres
     environment:
-      POSTGRES_USER: arczi
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: magazynplus
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
-    networks:
-      - postgres
     restart: unless-stopped
+    networks:
+      - network
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -78,12 +66,133 @@ services:
     ports:
       - "5050:80"
     networks:
-      - postgres
+      - network
     restart: unless-stopped
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - network
+
+  broker:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - network
+    restart: on-failure
+    mem_reservation: 512m
+
+  discovery-server:
+    image: arczi59611/discovery-server
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - network
+
+  api-gateway:
+    image: arczi59611/api-gateway
+    container_name: api-gateway
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: TRACE
+    depends_on:
+      - keycloak
+      - discovery-server
+      - file-service
+      - product-service
+      - supplier-service
+    networks:
+      - network
+
+  product-service:
+    image: arczi59611/products-service
+    container_name: product-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/magazynplus
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - postgres
+      - broker
+    networks:
+      - network
+
+  user-service:
+    image: arczi59611/user-service
+    container_name: user-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/magazynplus
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - postgres
+      - broker
+    networks:
+      - network
+
+  supplier-service:
+    image: arczi59611/supplier-service
+    container_name: supplier-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/magazynplus
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - postgres
+      - broker
+    networks:
+      - network
+
+  file-service:
+    image: arczi59611/file-service
+    container_name: file-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - postgres
+      - broker
+    networks:
+      - network
+  angular-app:
+    image: arczi59611/magazynplus-frontend
+    container_name: frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - api-gateway
+      - keycloak
+    networks:
+      - network
 networks:
-  postgres:
+  network:
     driver: bridge
+
 volumes:
   postgres:
   mysql_data_volume:
