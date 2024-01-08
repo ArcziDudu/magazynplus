@@ -13,8 +13,7 @@ services:
       - network
 
   keycloak:
-    build:
-      context: ./security
+    image: arczi59611/security
     container_name: keycloak
     command: ["start-dev", "--import-realm"]
     environment:
