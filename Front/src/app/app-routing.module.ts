@@ -16,7 +16,7 @@ import {SupplierResolverService} from "./supplier-resolver.service";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  {path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  {path: 'home', component: HomeComponent},
   {
     path: 'access-denied',
     component: AccessDeniedComponent,

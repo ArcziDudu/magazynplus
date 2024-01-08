@@ -4,6 +4,6 @@ export const environment = {
   keycloak: {
     issuer: 'http://keycloak:8080',
     realm: 'magazynplus',
-    clientId: 'frontend'
+    clientId: 'frontend',
   },
 };

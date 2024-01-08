@@ -14,7 +14,7 @@ services:
 
   keycloak:
     build:
-      context: ./keycloak-spi-listener
+      context: ./security
     container_name: keycloak
     command: ["start-dev", "--import-realm"]
     environment:
@@ -180,7 +180,7 @@ services:
     networks:
       - network
   angular-app:
-    image: arczi59611/magazynplus-frontend
+    image: arczi59611/magazynplus-front
     container_name: frontend
     ports:
       - "4200:4200"

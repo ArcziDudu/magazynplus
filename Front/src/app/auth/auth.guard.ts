@@ -15,7 +15,6 @@ export class AuthGuard extends KeycloakAuthGuard {
   }
 
   public async isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-
     if (!this.authenticated) {
       await this.keycloak.login({
         redirectUri: window.location.origin + state.url
