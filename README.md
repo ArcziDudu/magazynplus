@@ -38,6 +38,7 @@ vices are up and running and the services connect to the discovery server
 
 ## What you can do in the app
 
+![image1.png](Front/src/assets/image1.png)
 
 ![hero.png](Front/src/assets/image2.png)
 <br>
