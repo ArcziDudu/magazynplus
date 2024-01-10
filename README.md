@@ -35,9 +35,14 @@ To overcome it above config is necessary. So please find it:
 vices are up and running and the services connect to the discovery server
 7. In your browser, go to `localhost:4200` and register new account
 <br>
+
 ## What you can do in the app
+
+
 ![hero.png](Front/src/assets/image2.png)
 <br>
+
+
 In main Page section you can add your first products manualy or by upload file e.g. a ready-made product file
 included in the package named `example-products.csv`or create your own based on it.
 <br>
