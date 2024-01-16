@@ -26,13 +26,12 @@ which forwards queries to the appropriate rest controllers.
 depending on the point of view. From the point of view of an app that is running in the web browser it’ll be http://localhost:8080, 
 but from the perspective of backend application that is running inside the Docker network it will be http://keycloak:8080.
 To overcome it above config is necessary. So please find it:
-- On windows: C:\Windows\System32\drivers\etc run as administrator and add following line: 127.0.0.1	keycloak
+- On windows: C:\Windows\System32\drivers\etc\hosts run as administrator and add following line: 127.0.0.1	keycloak
 - On Linux(ubuntu): Etc/hosts, open in terminal by `sudo nano hosts` and add following line: 127.0.0.1	keycloak, ctrl +o, ctrl +x
 
 - `Without this step keyckloak will not properly verify the token from api requests !`
 5. Run `docker compose up` in main directory to run all of the services
-6. Wait a while until all ser## Technologies Used
-vices are up and running and the services connect to the discovery server
+6. Wait a while until all services are up and running and the services connect to the discovery server
 7. In your browser, go to `localhost:4200` and register new account
 <br>
 
